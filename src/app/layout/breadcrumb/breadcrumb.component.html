@@ -1,0 +1,34 @@
+<div class="breadcrumb">
+
+  <!-- HOME -->
+  <mat-icon class="home-icon">home</mat-icon>
+
+  <!-- ITEMS -->
+  <ng-container *ngFor="let item of items; let i = index">
+
+    <span class="crumb"
+          [class.active]="i === items.length - 1">
+      {{ item }}
+    </span>
+
+    <mat-icon *ngIf="i !== items.length - 1"
+              class="sep-icon">
+      chevron_right
+    </mat-icon>
+
+  </ng-container>
+
+  <!-- 🔥 RIGHT PANEL TOGGLE BUTTON -->
+  <span class="spacer"></span>
+
+  <button mat-icon-button
+          class="panel-toggle-btn"
+          (click)="toggleRightPanel.emit()">
+
+    <mat-icon>
+      {{ rightPanelOpen ? 'chevron_right' : 'chevron_left' }}
+    </mat-icon>
+
+  </button>
+
+</div>

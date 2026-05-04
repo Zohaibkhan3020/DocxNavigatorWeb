@@ -1,0 +1,97 @@
+<!-- HEADER -->
+<app-header
+  [title]="title"
+  (toggleSidebar)="toggleSidebar()"
+  (logoutEvent)="logout()">
+</app-header>
+
+<!-- APP WRAPPER -->
+<mat-sidenav-container class="sidenav-container">
+
+  <!-- LEFT SIDEBAR -->
+  <mat-sidenav
+    class="sidenav"
+    mode="side"
+    [opened]="isSidebarOpened"
+    [ngStyle]="{'width.px': leftWidth}">
+
+    <app-sidebar
+      (navigateEvent)="navigate($event)">
+    </app-sidebar>
+
+  </mat-sidenav>
+
+  <!-- MAIN CONTENT -->
+  <mat-sidenav-content>
+
+    <div class="page-wrapper">
+
+      <!-- LEFT RESIZER -->
+      <div class="resizer-left" (mousedown)="startLeftResize($event)"></div>
+
+      <!-- CENTER AREA -->
+      <div class="center-content">
+
+         <!-- BREADCRUMB -->
+       <app-breadcrumb
+  [items]="breadcrumb"
+  [rightPanelOpen]="rightPanelOpen"
+  (toggleRightPanel)="toggleRightPanel()">
+</app-breadcrumb>
+ <!-- <div class="doc-list">
+
+      <div class="content">
+
+  <h3>Documents</h3>
+
+  <div class="doc-list">
+
+    <div class="doc-card"
+         *ngFor="let doc of documents"
+         (click)="openDocument(doc)">
+
+      <mat-icon>
+        {{ doc.type === 'pdf' ? 'picture_as_pdf' : 'grid_on' }}
+      </mat-icon>
+
+      <div>
+        <b>{{ doc.name }}</b>
+        <div style="font-size:12px;">{{ doc.size }}</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+    </div> -->
+        <!-- ROUTER CONTENT -->
+        <div class="content">
+          <router-outlet></router-outlet>
+        </div>
+
+      </div>
+
+      <!-- RIGHT RESIZER -->
+      <div class="resizer" (mousedown)="startResize($event)"></div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel"
+     [ngStyle]="{'width.px': rightPanelOpen ? rightWidth : 0}">
+
+
+<app-right-panel
+  [activeView]="activeView"
+  [fileType]="fileType"
+  [document]="selectedDoc"
+  (viewChange)="setView($event)">
+</app-right-panel>
+
+</div>
+
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

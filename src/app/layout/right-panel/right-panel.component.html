@@ -1,0 +1,107 @@
+<div class="right-panel">
+
+  <!-- HEADER TABS (STICKY) -->
+  <div class="view-toggle">
+
+    <button mat-button
+      [class.active]="activeView === 'preview'"
+      (click)="changeView('preview')">
+
+      <mat-icon>visibility</mat-icon>
+      Preview
+    </button>
+
+    <button mat-button
+      [class.active]="activeView === 'metadata'"
+      (click)="changeView('metadata')">
+
+      <mat-icon>info</mat-icon>
+      Metadata
+    </button>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="panel-content">
+
+    <!-- PREVIEW -->
+    <div *ngIf="activeView === 'preview'" class="preview-area">
+
+      <!-- PDF -->
+      <div *ngIf="fileType === 'pdf'" class="pdf-box">
+
+        <!-- PDF TOOLBAR -->
+        <div class="pdf-toolbar">
+          <button mat-icon-button><mat-icon>zoom_in</mat-icon></button>
+          <button mat-icon-button><mat-icon>zoom_out</mat-icon></button>
+          <button mat-icon-button><mat-icon>download</mat-icon></button>
+        </div>
+
+        <iframe
+          src="assets/Sample.pdf"
+          class="pdf-viewer">
+        </iframe>
+
+      </div>
+
+      <!-- EXCEL -->
+      <div *ngIf="fileType === 'excel'">
+
+        <table class="excel-table">
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Row 1</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Row 2</td>
+            <td>200</td>
+          </tr>
+        </table>
+
+      </div>
+
+      <!-- EMPTY -->
+      <div *ngIf="!fileType" class="empty-state">
+        <mat-icon>description</mat-icon>
+        <p>Select a document</p>
+      </div>
+
+    </div>
+
+    <!-- METADATA -->
+    <div *ngIf="activeView === 'metadata'" class="meta-box">
+
+      <div class="meta-header">
+        <h4>Document Info</h4>
+        <button mat-icon-button (click)="editMode = !editMode">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="meta-item">
+        <b>Name:</b>
+        <span *ngIf="!editMode">{{ document?.name }}</span>
+        <input *ngIf="editMode" [(ngModel)]="document.name">
+      </div>
+
+      <div class="meta-item">
+        <b>Type:</b> {{ document?.type }}
+      </div>
+
+      <div class="meta-item">
+        <b>Size:</b> {{ document?.size }}
+      </div>
+
+      <button *ngIf="editMode" mat-raised-button color="primary">
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

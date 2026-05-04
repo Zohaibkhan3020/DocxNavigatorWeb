@@ -1,0 +1,74 @@
+/* ===== TABLE COMPACT MODE ===== */
+.custom-table{
+    border-radius: 10px;
+}
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+/* HEADER */
+.mat-header-cell {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  padding: 8px 10px;
+}
+
+/* ROW */
+.mat-row {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* CELL */
+.mat-cell {
+  font-size: 8px;
+  padding: 8px 10px;
+  color: #0c51f3;
+}
+
+/* NAME CELL */
+.file-name {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.file-sub {
+  font-size: 10px;
+  color: #64748b;
+}
+
+/* ICON */
+.file-icon {
+  width: 16px;
+}
+
+/* BADGE */
+.badge {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+/* VERSION */
+.version {
+  font-size: 10px;
+  padding: 2px 5px;
+}
+
+/* STATUS */
+.status {
+  font-size: 11px;
+}
+
+/* ROW HEIGHT CONTROL */
+.mat-row, .mat-header-row {
+  height: 20px;
+}
+
+/* HOVER */
+.mat-row:hover {
+  background: #127fec;
+}

@@ -1,0 +1,88 @@
+<app-header
+  [title]="title"
+  (toggleSidebar)="toggleSidebar()"
+  (logoutEvent)="logout()">
+</app-header>
+<app-breadcrumb></app-breadcrumb>
+<div class="dashboard">
+
+  <!-- 🔹 Cards Section -->
+  <div class="card-grid">
+
+ <mat-card class="card" *ngFor="let card of cards">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <mat-icon>{{ card.icon }}</mat-icon>
+    <h5>{{ card.title }}</h5>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card-body">
+
+    <table class="simple-table">
+
+      <tr *ngFor="let item of card.list" (click)="OpenContent(item)">
+
+        <td class="icon-cell">
+          <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+        </td>
+
+        <td class="name-cell">
+          {{ item.odM_Nname }}
+        </td>
+
+      </tr>
+
+    </table>
+
+
+  </div>
+
+</mat-card>
+
+</div>
+
+  <!-- 🔹 Document List -->
+  <mat-card class="table-card">
+
+    <h5>Documents</h5>
+
+    <table mat-table [dataSource]="documents" class="mat-elevation-z2">
+
+      <!-- Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let d"> {{ d.name }} </td>
+      </ng-container>
+
+      <!-- Type -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let d"> {{ d.type }} </td>
+      </ng-container>
+
+      <!-- Date -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let d"> {{ d.date }} </td>
+      </ng-container>
+
+      <!-- Action -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let d">
+          <button mat-icon-button color="primary">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+  </mat-card>
+
+</div>

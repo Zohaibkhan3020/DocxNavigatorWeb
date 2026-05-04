@@ -1,0 +1,178 @@
+/* HEADER */
+.header {
+  height: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* SIDEBAR */
+.sidenav {
+  width: 240px;
+  background: #ffffff;
+  color: white;
+}
+
+/* LOGO */
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  color: white;
+}
+
+
+/* .node-icon {
+  margin-right: 8px;
+  color: #60a5fa;
+}
+
+.node-text {
+  cursor: pointer;
+  font-size: 11px;
+  display: inline-block;
+  padding: 4px;
+} */
+
+/* .node-text:hover {
+  color: #38bdf8;
+} */
+
+/* CONTENT */
+.content {
+  padding: 16px;
+  background: #f5f6fa;
+  min-height: 100%;
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* CONTAINER */
+.sidenav-container {
+  height: calc(100vh - 64px);
+}
+/* MAIN LAYOUT */
+.main-layout {
+  display: flex;
+  height: 100%;
+}
+
+/* CENTER CONTENT */
+.content-area {
+  flex: 1;
+  padding: 16px;
+  background: #f5f6fa;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 340px;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+
+/* PREVIEW AREA */
+.preview-box {
+  text-align: center;
+  padding-top: 40px;
+  color: #94a3b8;
+}
+
+.big-icon {
+  font-size: 60px;
+  color: #cbd5e1;
+}
+
+/* METADATA STYLE */
+.meta-item {
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.meta-item span {
+  font-weight: 600;
+  color: #0f172a;
+}
+/* MAIN LAYOUT */
+.page-wrapper {
+  display: flex;
+  height: calc(100vh - 64px);
+}
+
+.right-panel {
+  height: 100%;
+  min-width: 250px;
+}
+
+/* CENTER */
+.center-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f5f6fa;
+  overflow: hidden;
+}
+
+/* RESIZER (DRAG HANDLE) */
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  background: #e2e8f0;
+}
+
+.resizer:hover {
+  background: #94a3b8;
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* CONTENT */
+.content {
+  padding: 16px;
+  flex: 1;
+  overflow: auto;
+}
+
+/* TABS */
+mat-tab-group {
+  height: 100%;
+}
+
+.tab-content {
+  padding: 16px;
+}
+
+/* ICON ALIGN */
+mat-icon {
+  vertical-align: middle;
+  margin-right: 4px;
+}

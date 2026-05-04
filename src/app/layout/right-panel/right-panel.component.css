@@ -1,0 +1,90 @@
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+}
+
+/* TABS (STICKY HEADER) */
+.view-toggle {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.view-toggle button {
+  flex: 1;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.view-toggle button.active {
+  background: #e0e7ff;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+/* CONTENT */
+.panel-content {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+}
+
+/* PDF */
+.pdf-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdf-toolbar {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 500px;
+  border: none;
+  border-radius: 6px;
+}
+
+/* EMPTY */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+}
+
+.empty-state mat-icon {
+  font-size: 50px;
+}
+
+/* METADATA */
+.meta-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-item {
+  padding: 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  font-size: 12px;
+}

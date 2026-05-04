@@ -1,0 +1,116 @@
+<mat-toolbar class="header">
+
+  <!-- MENU -->
+  <button mat-icon-button *ngIf="!isDashboard()" (click)="toggleSidebar.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- TITLE / LOGO -->
+  <span class="app-title">{{ title }}</span>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+
+    <mat-icon>search</mat-icon>
+
+    <input
+      [(ngModel)]="searchText"
+      (keyup.enter)="onSearch()"
+      placeholder="Search documents..."
+    />
+
+    <!-- SEARCH BUTTON -->
+    <button mat-icon-button (click)="onSearch()" matTooltip="Search">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+
+    <!-- 🔥 ADVANCED FILTER BUTTON -->
+    <button 
+      mat-icon-button 
+      [matMenuTriggerFor]="filterMenu"
+      matTooltip="Advanced Filter">
+      <mat-icon>tune</mat-icon>
+    </button>
+
+  </div>
+
+  <span class="spacer"></span>
+
+  <!-- DARK MODE -->
+  <button mat-icon-button (click)="toggleDarkMode()" matTooltip="Toggle Dark Mode">
+    <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+
+  <!-- CHAT -->
+  <button mat-icon-button matTooltip="Chat">
+    <mat-icon>chat</mat-icon>
+  </button>
+
+  <!-- NOTIFICATIONS -->
+  <button mat-icon-button [matBadge]="3" matBadgeColor="warn" matTooltip="Notifications">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <!-- USER -->
+  <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <!-- USER MENU -->
+  <mat-menu #profileMenu="matMenu">
+
+    <button mat-menu-item>
+      <mat-icon>person</mat-icon>
+      Profile
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings
+    </button>
+
+    <button mat-menu-item (click)="logoutEvent.emit()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+
+  </mat-menu>
+
+</mat-toolbar>
+
+<!-- 🔥 ADVANCED FILTER MENU -->
+<mat-menu #filterMenu="matMenu" class="filter-menu">
+
+  <div class="filter-panel" (click)="$event.stopPropagation()">
+
+    <h4>Advanced Search</h4>
+
+    <!-- FILE TYPE -->
+    <mat-form-field appearance="outline">
+      <mat-label>File Type</mat-label>
+      <mat-select [(ngModel)]="filters.type">
+        <mat-option value="">All</mat-option>
+        <mat-option value="pdf">PDF</mat-option>
+        <mat-option value="doc">Word</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- DATE -->
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" [(ngModel)]="filters.date">
+    </mat-form-field>
+
+    <!-- USER -->
+    <mat-form-field appearance="outline">
+      <mat-label>Created By</mat-label>
+      <input matInput [(ngModel)]="filters.user">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="applyFilters()">
+      Apply
+    </button>
+
+  </div>
+
+</mat-menu>

@@ -1,0 +1,119 @@
+.login-bg {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #0ea5e9);
+}
+
+/* Glass Card */
+.glass-card {
+  width: 850px;
+  height: 520px;
+  display: flex;
+
+  border-radius: 25px;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* LEFT */
+.left-panel {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.brand p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.illustration {
+  font-size: 90px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.tagline {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* RIGHT */
+.right-panel {
+  flex: 1;
+  background: white;
+  padding: 50px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.right-panel h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.sub {
+  font-size: 13px;
+  color: gray;
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.full {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Row */
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.link {
+  color: #3b82f6;
+  cursor: pointer;
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #3b82f6, #06b6d4);
+  color: white;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 12px;
+  color: gray;
+}
+
+.google {
+  width: 100%;
+}

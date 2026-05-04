@@ -1,0 +1,53 @@
+<div class="sidebar">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <mat-icon>folder</mat-icon>
+    <span>DMS SYSTEM</span>
+  </div>
+
+  <!-- TREE -->
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+
+    <!-- LEAF -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+
+      <div class="node"
+     [class.active]="selectedNodeId === node.id"
+     (click)="navigate(node)">
+
+        <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
+
+        <span class="node-text">
+          {{ node.name }}
+        </span>
+
+      </div>
+
+    </mat-tree-node>
+
+    <!-- PARENT -->
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+
+      <div class="node">
+
+        <button mat-icon-button matTreeNodeToggle (click)="$event.stopPropagation()">
+        <mat-icon>
+          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+        </mat-icon>
+      </button>
+
+      <div class="node-content" (click)="navigate(node)">
+        <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
+
+        <span class="node-text">
+          {{ node.name }}
+        </span>
+</div>
+      </div>
+
+    </mat-tree-node>
+
+  </mat-tree>
+
+</div>
