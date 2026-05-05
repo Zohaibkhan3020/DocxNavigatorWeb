@@ -18,7 +18,7 @@ rightPanelOpen = false;
    leftWidth = 240;
   rightWidth = 320;
 
-  activeView: 'preview' | 'metadata' = 'preview';
+  activeView: 'preview' | 'metadata' | 'comments' = 'preview';
 
 selectedDoc: any = null;
 fileType: 'pdf' | 'excel' | null = null;
@@ -68,7 +68,6 @@ openDocument(doc: any) {
 
 
 navigate(node: any) {
-debugger  
   if (node.route) {
     this.router.navigate([node.route]);
   }
@@ -112,7 +111,7 @@ toggleRightPanel() {
     this.router.navigate(['/login']);
   }
 
-setView(view: 'preview' | 'metadata') {
+setView(view: 'preview' | 'metadata' | 'comments') {
   this.activeView = view;
 }
   // ---------------- RIGHT RESIZE ----------------
