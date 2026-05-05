@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { DocumentService } from '../services/document.service';
 import { Subscription } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -12,7 +12,11 @@ import { MatTableDataSource } from '@angular/material/table';
   standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
+@Output() rowSelected = new EventEmitter<any>();
 
+// selectRow(row: any) {
+//   this.rowSelected.emit(row);
+// }
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = [
@@ -58,4 +62,11 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
+
+  selectRow(row: any) {
+debugger;
+  // 🔥 send to main layout
+  this.documentService.setSelectedDoc(row);
+
+}
 }

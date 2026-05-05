@@ -11,7 +11,7 @@ export class RightPanelComponent {
  @Input() activeView: 'preview' | 'metadata' = 'preview';
 
   @Input() fileType: 'pdf' | 'excel' | null = null;
-
+@Input() previewUrl: any;
   @Input() document: any;
 
   @Output() viewChange = new EventEmitter<'preview' | 'metadata'>();

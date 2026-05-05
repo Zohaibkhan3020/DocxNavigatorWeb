@@ -38,9 +38,10 @@
         </div>
 
         <iframe
-          src="assets/Sample.pdf"
-          class="pdf-viewer">
-        </iframe>
+  *ngIf="previewUrl"
+  [src]="previewUrl | safeUrl"
+  class="pdf-viewer">
+</iframe>
 
       </div>
 

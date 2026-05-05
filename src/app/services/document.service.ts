@@ -26,11 +26,18 @@ setDocuments(data: any[]) {
     return this.http.get<any[]>(`${this.apiUrl}/Search?UserID=${userId}&RoleID=${RoleID}&Search=${Search}`);
   }
 
-  openDocument(docId: string) {
+ openDocument(docId: string, cardId: number, userId: number) {
   return this.http.get(
-    `${this.apiUrl}/OpenDocument?docId=${docId}`,
+    `https://localhost:7033/api/Documents/OpenDocument?DocID=${docId}&CardID=${cardId}&UserID=${userId}`,
     { responseType: 'blob' }
   );
+}
+
+private selectedDocSubject = new BehaviorSubject<any>(null);
+selectedDoc$ = this.selectedDocSubject.asObservable();
+
+setSelectedDoc(doc: any) {
+  this.selectedDocSubject.next(doc);
 }
   // ===== Breadcrumb =====
   private _breadcrumb = new BehaviorSubject<any[]>([]);

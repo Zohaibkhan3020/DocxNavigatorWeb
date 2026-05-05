@@ -22,11 +22,40 @@ rightPanelOpen = false;
 
 selectedDoc: any = null;
 fileType: 'pdf' | 'excel' | null = null;
-
+previewUrl: any;
 constructor(private router: Router, private documentService: DocumentService) {}
 ngOnInit() {
  this.documentService.breadcrumb$.subscribe(data => {
     this.breadcrumb = data;
+  });
+
+  this.documentService.selectedDoc$.subscribe(doc => {
+
+    if (!doc) return;
+
+    this.selectedDoc = doc;
+
+    // 🔥 detect type
+    const ext = doc.ext?.toLowerCase();
+    if (ext === 'pdf') this.fileType = 'pdf';
+    else if (ext === 'xls' || ext === 'xlsx') this.fileType = 'excel';
+    else this.fileType = null;
+    const CardID = Number(localStorage.getItem('selectedNode'));
+    // 🔥 call API
+    this.documentService
+      .openDocument(doc.documentId, CardID, 1)
+      .subscribe(blob => {
+
+        if (this.previewUrl) {
+          URL.revokeObjectURL(this.previewUrl);
+        }
+
+        this.previewUrl = URL.createObjectURL(blob);
+
+        // 🔥 auto open right panel
+        this.rightPanelOpen = true;
+      });
+
   });
 }
 openDocument(doc: any) {

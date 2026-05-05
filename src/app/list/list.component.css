@@ -1,74 +1,104 @@
-/* ===== TABLE COMPACT MODE ===== */
-.custom-table{
-    border-radius: 10px;
-}
-table {
-  width: 100%;
+/* ===== TABLE CONTAINER ===== */
+.table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
 }
 
-th.mat-sort-header-sorted {
-  color: black;
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
-/* HEADER */
+.table-header h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+/* ===== HEADER ===== */
 .mat-header-cell {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: #64748b;
   text-transform: uppercase;
-  padding: 8px 10px;
+  padding: 12px 10px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* ROW */
+/* ===== ROW ===== */
 .mat-row {
   border-bottom: 1px solid #f1f5f9;
+  transition: 0.2s;
+  cursor: pointer;
 }
 
-/* CELL */
+/* ===== CELL ===== */
 .mat-cell {
-  font-size: 8px;
-  padding: 8px 10px;
-  color: #0c51f3;
+  font-size: 13px;
+  padding: 10px;
+  color: #1e293b;
 }
 
-/* NAME CELL */
+/* ===== NAME CELL ===== */
+.file-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .file-name {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
+  color: #0f172a;
 }
 
 .file-sub {
-  font-size: 10px;
-  color: #64748b;
-}
-
-/* ICON */
-.file-icon {
-  width: 16px;
-}
-
-/* BADGE */
-.badge {
-  font-size: 10px;
-  padding: 2px 6px;
-}
-
-/* VERSION */
-.version {
-  font-size: 10px;
-  padding: 2px 5px;
-}
-
-/* STATUS */
-.status {
   font-size: 11px;
+  color: #94a3b8;
 }
 
-/* ROW HEIGHT CONTROL */
+/* ===== ICON ===== */
+.file-icon {
+  width: 20px;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* ===== VERSION ===== */
+.version {
+  background: #f1f5f9;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* ===== STATUS ===== */
+.status {
+  font-size: 12px;
+  font-weight: 500;
+  color: #16a34a;
+}
+
+/* ===== ROW HEIGHT ===== */
 .mat-row, .mat-header-row {
-  height: 20px;
+  height: 45px;
 }
 
-/* HOVER */
+/* ===== HOVER ===== */
 .mat-row:hover {
-  background: #127fec;
+  background: #f1f5ff;
+  cursor: pointer;
+}
+
+/* ===== SORT ACTIVE ===== */
+th.mat-sort-header-sorted {
+  color: #2563eb;
 }

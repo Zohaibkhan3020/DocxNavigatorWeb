@@ -100,6 +100,7 @@ export class SidebarComponent implements OnInit {
 
   navigate(node: TreeNode) {
 this.selectedNodeId = node.id;
+localStorage.setItem('selectedNode', node.id.toString());
   // 👉 breadcrumb set karo
   this.documentService.setBreadcrumb(node.breadcrumb || []);
 

@@ -6,7 +6,7 @@
   </div>
 
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
-       class="mat-elevation-z8">
+       class="mat-elevation-z8 sticky-table">
 
     <!-- NAME -->
     <ng-container matColumnDef="name">
@@ -90,7 +90,10 @@
 
     <!-- HEADER + ROW -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row 
+    *matRowDef="let row; columns: displayedColumns;"
+    (click)="selectRow(row)">
+</tr>
 
   </table>
 
