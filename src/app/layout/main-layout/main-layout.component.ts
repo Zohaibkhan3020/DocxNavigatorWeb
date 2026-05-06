@@ -10,15 +10,16 @@ import { DocumentService } from 'src/app/services/document.service';
 })
 export class MainLayoutComponent {
 
-  title = "DOCX Navigator";
-  breadcrumb: string[] = [];
+title = "DOCX Navigator";
+breadcrumb: string[] = [];
 documents: any[] = [];
-  isSidebarOpened = true;
+isSidebarOpened = true;
 rightPanelOpen = false;
-   leftWidth = 240;
-  rightWidth = 320;
-
-  activeView: 'preview' | 'metadata' | 'comments' = 'preview';
+leftWidth = 240;
+rightWidth = 400;  // preview
+metadataOpen = false;     // metadata
+metaWidth = 400;
+activeView: 'preview' | 'metadata' | 'comments' = 'preview';
 
 selectedDoc: any = null;
 fileType: 'pdf' | 'excel' | null = null;
@@ -83,36 +84,19 @@ navigate(node: any) {
 toggleRightPanel() {
   this.rightPanelOpen = !this.rightPanelOpen;
 }
-  // navigation
-//   navigate(node: any) {
-
-//   if (node.route) {
-//     // this.router.navigate([node.route]); (optional)
-//   }
-
-//   if (node.breadcrumb) {
-//     this.breadcrumb = [...node.breadcrumb];
-//   }
-
-//   // 🔥 NEW: file type assign (dummy logic)
-//   if (node.name.toLowerCase().includes('user')) {
-//     this.fileType = 'excel';
-//   }
-//   else if (node.name.toLowerCase().includes('dashboard')) {
-//     this.fileType = 'pdf';
-//   }
-//   else {
-//     this.fileType = null;
-//   }
-// }
-
   logout() {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
 setView(view: any) {
   this.activeView = view;
-  this.rightPanelOpen = true; // 👈 IMPORTANT (auto open panel)
+  if(view === 'metadata') {
+     this.metadataOpen = !this.metadataOpen;
+     
+  }
+  if(view === 'preview') {
+    this.rightPanelOpen = true;
+  }
 }
 // setView(view: 'preview' | 'metadata' | 'comments') {
 //   this.activeView = view;

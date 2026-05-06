@@ -5,7 +5,24 @@
   background: #f4f6f9;
   border-left: 1px solid #e5e7eb;
 }
+/* 🔥 TOP ICON BAR */
+.top-actions {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+}
 
+.top-actions button {
+  transition: 0.2s;
+}
+
+.top-actions button.active {
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+}
 /* TOP TABS (MODERN GLASS STYLE) */
 .view-toggle {
   position: sticky;
