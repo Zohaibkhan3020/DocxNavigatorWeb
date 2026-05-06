@@ -1,0 +1,42 @@
+.right-tabs {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 1000;
+}
+
+.right-tabs button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 60px;
+  padding: 10px 5px;
+
+  border: none;
+  background: #f1f1f1;
+  cursor: pointer;
+
+  border-radius: 8px 0 0 8px;
+  transition: all 0.3s ease;
+}
+
+.right-tabs button:hover {
+  background: #ddd;
+}
+
+.right-tabs button.active {
+  background: #007bff;
+  color: white;
+}
+
+.right-tabs span {
+  font-size: 10px;
+  margin-top: 4px;
+}

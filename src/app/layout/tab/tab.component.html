@@ -1,0 +1,23 @@
+<p>tab works!</p>
+<div class="right-tabs">
+  <button 
+    [class.active]="activeTab === 'preview'" 
+    (click)="setTab('preview')">
+    👁
+    <span>Preview</span>
+  </button>
+
+  <button 
+    [class.active]="activeTab === 'metadata'" 
+    (click)="setTab('metadata')">
+    📄
+    <span>Metadata</span>
+  </button>
+
+  <button 
+    [class.active]="activeTab === 'comments'" 
+    (click)="setTab('comments')">
+    💬
+    <span>Comments</span>
+  </button>
+</div>

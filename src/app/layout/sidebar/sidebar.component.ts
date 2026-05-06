@@ -3,6 +3,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MenuService } from 'src/app/services/menu.service';
 import { DocumentService } from 'src/app/services/document.service';
+import { Router } from '@angular/router';
 
 interface TreeNode {
   id: number;
@@ -23,7 +24,7 @@ interface TreeNode {
 export class SidebarComponent implements OnInit {
   selectedNodeId: number | null = null;
   @Output() navigateEvent = new EventEmitter<any>();
-  constructor(private menuService: MenuService, private documentService: DocumentService) {}
+  constructor(private menuService: MenuService, private documentService: DocumentService, private router: Router) {}
 
   ngOnInit() {
    const userId = Number(localStorage.getItem('id'));
@@ -138,5 +139,9 @@ localStorage.setItem('selectedNode', node.id.toString());
     },
     error: (err) => console.error(err)
   });
+}
+
+clickLogo(){
+  this.router.navigate(['/dashboard']);
 }
 }

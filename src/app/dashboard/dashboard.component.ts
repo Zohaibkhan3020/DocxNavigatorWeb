@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../services/dashboard.service';
 import { DocumentService } from '../services/document.service';
 import { Router } from '@angular/router';
-
+import { forkJoin } from 'rxjs';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -39,53 +40,120 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+  const userId = Number(localStorage.getItem('id') || 0);
+  const username = localStorage.getItem('username') || '';
+  this.userName = username;
 
-    const userId = Number(localStorage.getItem('id') || 0);
-    const username = localStorage.getItem('username') || '';
-    this.userName = username;
+  forkJoin({
+    assignments: this.ds.getAssignments(userId),
+    favorites: this.ds.getFavorites(userId),
+    recent: this.ds.getRecent(username)
+  }).subscribe({
+    next: (res) => {
+      this.assignments = res.assignments;
+      this.favorites = res.favorites;
+      this.recent = res.recent;
 
-    // 🔥 Assignments API
-    this.ds.getAssignments(userId).subscribe(res => {
-      this.assignments = res;
-      this.updateCards(); // ✅ update after data
-    });
+      this.updateCards(); 
+      this.applySavedOrder();
+    },
+    error: (err) => {
+      console.error('Dashboard Load Error:', err);
+    }
+  });
+}
+drop(event: CdkDragDrop<any[]>) {
+  moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
 
-    this.ds.getFavorites(userId).subscribe(res => {
-      this.favorites = res;
-      this.updateCards();
-    });
+  // ✅ save order
+  this.saveCardOrder();
+}
 
-    this.ds.getRecent(username).subscribe(res => {
-      this.recent = res;
-      this.updateCards();
-    });
-  }
+saveCardOrder() {
+  const order = this.cards.map((c, index) => ({
+    title: c.title,
+    order: index
+  }));
 
+  localStorage.setItem('cardOrder', JSON.stringify(order));
+}
+applySavedOrder() {
+  const saved = localStorage.getItem('cardOrder');
+  if (!saved) return;
+
+  const order = JSON.parse(saved);
+
+  this.cards.sort((a, b) => {
+    const aOrder = order.find((x: any) => x.title === a.title)?.order ?? 999;
+    const bOrder = order.find((x: any) => x.title === b.title)?.order ?? 999;
+    return aOrder - bOrder;
+  });
+}
   // 🔥 CENTRAL CARD BUILDER
   updateCards() {
-    this.cards = [
-      {
-        title: 'Assignments',
-        icon: 'description',
-        list: this.assignments
-      },
-      {
-        title: 'Favorites',
-        icon: 'star',
-        list: this.favorites
-      },
-      {
-        title: 'Recent',
-        icon: 'history',
-        list: this.recent
-      },
-      {
-        title: 'Storage',
-        icon: 'storage',
-        list: ['Used Space', 'Free Space', 'Backup']
-      }
-    ];
-  }
+  this.cards = [
+    {
+      title: 'Assignments',
+      icon: 'description',
+      count: this.assignments?.length || 0,
+      list: this.assignments
+    },
+    {
+      title: 'Favorites',
+      icon: 'star',
+      count: this.favorites?.length || 0,
+      list: this.favorites
+    },
+    {
+      title: 'Recent',
+      icon: 'history',
+      count: this.recent?.length || 0,
+      list: this.recent
+    },
+    {
+  title: 'Reports',
+  icon: 'bar_chart',
+  list: [{ label:'Daily Activity'}, {label: 'Uploads'}, {label: 'Downloads'}]
+},
+    {
+      title: 'Workspace',
+      icon: 'workspaces',
+      list: [
+        { label: 'Module 1', value: '70%' },
+        { label: 'Module 2', value: '30%' },
+        { label: 'Module 3', value: 'Available' }
+      ]
+    },
+    {
+      title: 'Storage',
+      icon: 'storage',
+      list: [
+        { label: 'Used Space', value: '120 GB' },
+        { label: 'Free Space', value: '80 GB' },
+        { label: 'Backup', value: 'Last Night' }
+      ]
+    },
+    {
+      title: 'Modules',
+      icon: 'view_module',
+      list: [
+        { label: 'Module 1', value: '70%' },
+        { label: 'Module 2', value: '30%' },
+        { label: 'Module 3', value: 'Available' }
+      ]
+    },
+    {
+      title: 'Activity Log',
+      icon: 'history',
+      list: [
+        { label: 'Recent Activity', value: '120 GB' },
+        { label: 'System Updates', value: '80 GB' },
+        { label: 'Security Alerts', value: 'Last Night' }
+      ]
+    }
+
+  ];
+}
 OpenContent(item: any)
 { 
   debugger

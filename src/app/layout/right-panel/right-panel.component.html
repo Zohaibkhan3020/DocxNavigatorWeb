@@ -1,7 +1,7 @@
 <div class="right-panel">
 
   <!-- HEADER TABS -->
-  <div class="view-toggle">
+  <!-- <div class="view-toggle">
 
     <button mat-button
       [class.active]="activeView === 'preview'"
@@ -23,7 +23,7 @@
     <mat-icon>chat</mat-icon>
     <span>Comments</span>
   </button>
-  </div>
+  </div> -->
 
   <!-- CONTENT -->
   <div class="panel-content">
@@ -31,11 +31,11 @@
     <!-- PREVIEW -->
     <div *ngIf="activeView === 'preview'" class="preview-card">
 
-      <div class="pdf-toolbar">
+      <!-- <div class="pdf-toolbar">
         <button mat-icon-button><mat-icon>zoom_in</mat-icon></button>
         <button mat-icon-button><mat-icon>zoom_out</mat-icon></button>
         <button mat-icon-button><mat-icon>download</mat-icon></button>
-      </div>
+      </div> -->
 
       <iframe *ngIf="previewUrl"
         [src]="previewUrl | safeUrl"

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/document.service';
 
@@ -8,8 +8,8 @@ import { DocumentService } from 'src/app/services/document.service';
   styleUrls: ['./header.component.css'],
   standalone: false
 })
-export class HeaderComponent {
-
+export class HeaderComponent implements OnInit {
+themeMode: 'light' | 'dark' | 'system' = 'system';
   @Input() title!: string;
   @Output() toggleSidebar = new EventEmitter<void>();
   @Output() logoutEvent = new EventEmitter<void>();
@@ -28,20 +28,50 @@ export class HeaderComponent {
     private router: Router,
     private documentService: DocumentService
   ) {}
-
+ngOnInit() {
+  const savedTheme = localStorage.getItem('theme') as any;
+  this.themeMode = savedTheme || 'system';
+  this.applyTheme();
+}
   isDashboard(): boolean {
     return this.router.url.includes('dashboard');
   }
 
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
+  // 🔥 Toggle button (cycle modes)
+toggleDarkMode() {
+  if (this.themeMode === 'light') {
+    this.themeMode = 'dark';
+  } else if (this.themeMode === 'dark') {
+    this.themeMode = 'system';
+  } else {
+    this.themeMode = 'light';
+  }
 
-    if (this.isDarkMode) {
-      document.body.classList.add('dark-mode');
+  localStorage.setItem('theme', this.themeMode);
+  this.applyTheme();
+}
+
+// 🔥 Apply Theme Logic
+applyTheme() {
+  const body = document.body;
+
+  body.classList.remove('light-mode', 'dark-mode');
+
+  if (this.themeMode === 'dark') {
+    body.classList.add('dark-mode');
+  } else if (this.themeMode === 'light') {
+    body.classList.add('light-mode');
+  } else {
+    // 🔥 SYSTEM MODE
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (prefersDark) {
+      body.classList.add('dark-mode');
     } else {
-      document.body.classList.remove('dark-mode');
+      body.classList.add('light-mode');
     }
   }
+}
 
   // 🔍 NORMAL SEARCH
   onSearch() {

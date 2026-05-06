@@ -37,4 +37,5 @@ addComment() {
 
   this.newComment = '';
 }
+
 }

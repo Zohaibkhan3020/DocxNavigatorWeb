@@ -37,9 +37,15 @@
   <span class="spacer"></span>
 
   <!-- DARK MODE -->
-  <button mat-icon-button (click)="toggleDarkMode()" matTooltip="Toggle Dark Mode">
-    <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
-  </button>
+ <button mat-icon-button (click)="toggleDarkMode()" matTooltip="Toggle Theme">
+  <mat-icon>
+    {{
+      themeMode === 'light' ? 'light_mode' :
+      themeMode === 'dark' ? 'dark_mode' :
+      'settings_suggest'
+    }}
+  </mat-icon>
+</button>
 
   <!-- CHAT -->
   <button mat-icon-button matTooltip="Chat">

@@ -110,10 +110,13 @@ toggleRightPanel() {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
-
-setView(view: 'preview' | 'metadata' | 'comments') {
+setView(view: any) {
   this.activeView = view;
+  this.rightPanelOpen = true; // 👈 IMPORTANT (auto open panel)
 }
+// setView(view: 'preview' | 'metadata' | 'comments') {
+//   this.activeView = view;
+// }
   // ---------------- RIGHT RESIZE ----------------
   private isResizing = false;
   private startX = 0;

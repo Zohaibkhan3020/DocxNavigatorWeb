@@ -38,34 +38,6 @@
   [rightPanelOpen]="rightPanelOpen"
   (toggleRightPanel)="toggleRightPanel()">
 </app-breadcrumb>
- <!-- <div class="doc-list">
-
-      <div class="content">
-
-  <h3>Documents</h3>
-
-  <div class="doc-list">
-
-    <div class="doc-card"
-         *ngFor="let doc of documents"
-         (click)="openDocument(doc)">
-
-      <mat-icon>
-        {{ doc.type === 'pdf' ? 'picture_as_pdf' : 'grid_on' }}
-      </mat-icon>
-
-      <div>
-        <b>{{ doc.name }}</b>
-        <div style="font-size:12px;">{{ doc.size }}</div>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-    </div> -->
         <!-- ROUTER CONTENT -->
         <div class="content">
           <router-outlet></router-outlet>
@@ -75,7 +47,25 @@
 
       <!-- RIGHT RESIZER -->
       <div class="resizer" (mousedown)="startResize($event)"></div>
+<div class="right-tabs">
+  <button 
+    [class.active]="activeView === 'preview'" 
+    (click)="setView('preview')">
+    Preview
+  </button>
 
+  <button 
+    [class.active]="activeView === 'metadata'" 
+    (click)="setView('metadata')">
+    Metadata
+  </button>
+
+  <button 
+    [class.active]="activeView === 'comments'" 
+    (click)="setView('comments')">
+    Comments
+  </button>
+</div>
       <!-- RIGHT PANEL -->
       <div class="right-panel"
      [ngStyle]="{'width.px': rightPanelOpen ? rightWidth : 0}">

@@ -38,7 +38,7 @@
 .panel-content {
   flex: 1;
   overflow: auto;
-  padding: 16px;
+  padding: 10px;
 }
 
 /* CARD STYLE (DMS STANDARD) */
@@ -48,14 +48,16 @@
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  padding: 12px;
+  padding: 10px;
+  height:80vh;
 }
 
 /* PDF TOOLBAR */
+
 .pdf-toolbar {
   display: flex;
   gap: 8px;
-  padding: 8px;
+  padding: 6px;
   background: #f9fafb;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -65,7 +67,7 @@
 /* PDF VIEW */
 .pdf-viewer {
   width: 100%;
-  height: 70vh;
+  height: 80vh;
   border: none;
   border-radius: 8px;
 }
@@ -196,4 +198,135 @@
 
 .comment-input input:focus {
   border-color: #2563eb;
+}
+
+/* CONTAINER */
+.right-dock {
+  position: fixed;
+  right: 0;
+  top: 80px;
+  display: flex;
+  z-index: 1000;
+}
+
+/* VERTICAL TABS */
+.dock-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.dock-tab {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background: #e5e7eb;
+  padding: 10px 6px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border-radius: 6px 0 0 6px;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.dock-tab.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* SLIDE PANEL */
+.dock-content {
+  width: 300px;
+  height: 80vh;
+  background: #ffffff;
+  border-left: 2px solid #2563eb;
+  box-shadow: -3px 0 12px rgba(0,0,0,0.1);
+
+  transform: translateX(100%);
+  transition: 0.3s;
+}
+
+/* OPEN STATE */
+.right-dock.open .dock-content {
+  transform: translateX(0);
+}
+
+/* HEADER */
+.dock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+}
+
+/* CONTENT */
+.panel-content {
+  padding: 10px;
+  height: calc(100% - 50px);
+  overflow: auto;
+}
+/* CONTAINER */
+.right-dock {
+  position: fixed;
+  right: 0;
+  top: 80px;
+  display: flex;
+  z-index: 1000;
+}
+
+/* VERTICAL TABS */
+.dock-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.dock-tab {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background: #e5e7eb;
+  padding: 10px 6px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border-radius: 6px 0 0 6px;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.dock-tab.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* SLIDE PANEL */
+.dock-content {
+  width: 300px;
+  height: 80vh;
+  background: #ffffff;
+  border-left: 2px solid #2563eb;
+  box-shadow: -3px 0 12px rgba(0,0,0,0.1);
+
+  transform: translateX(100%);
+  transition: 0.3s;
+}
+
+/* OPEN STATE */
+.right-dock.open .dock-content {
+  transform: translateX(0);
+}
+
+/* HEADER */
+.dock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+}
+
+/* CONTENT */
+.panel-content {
+  padding: 10px;
+  height: calc(100% - 50px);
+  overflow: auto;
 }

@@ -22,7 +22,7 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #f5f6fa;
+  background: var(--card-bg);
   min-width: 0;
 }
 
@@ -31,6 +31,7 @@ html, body {
   flex: 1;
   overflow: auto;
   padding: 12px;
+  height: 100vh;
 }
 .right-toggle-btn {
   position: absolute;
@@ -39,7 +40,7 @@ html, body {
   transform: translateY(-50%);
   z-index: 2000;
 
-  background: white;
+  background: var(--card-bg);
   border: 1px solid #e2e8f0;
 }
 
@@ -48,23 +49,28 @@ html, body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: var(--card-bg);
   border-left: 1px solid #e2e8f0;
   position: relative;
+  margin-right: 14px;
 }
 
 /* SIDEBAR */
 .sidenav {
-  background: #ffffff;
+  background: var(--card-bg);
   border-right: 1px solid #e2e8f0;
+    position: fixed;   /* 👈 main fix */
+  top: 48px;         /* 👈 header ki height (adjust karo) */
+  left: 0;
 }
 
 /* RESIZERS */
 .resizer,
 .resizer-left {
-  width: 5px;
+  width: 4px;
   cursor: col-resize;
-  background: #e2e8f0;
+  background: var(--card-bg);
+  
 }
 
 .resizer:hover,
@@ -82,7 +88,7 @@ html, body {
   align-items: center;
   gap: 10px;
   padding: 10px;
-  background: white;
+  background: var(--card-bg);
   border: 1px solid #e2e8f0;
   cursor: pointer;
   border-radius: 6px;
@@ -91,7 +97,7 @@ html, body {
 
 
 .doc-card:hover {
-  background: #f1f5f9;
+  background: var(--card-bg);
 }
 
 .doc-info .name {
@@ -100,5 +106,72 @@ html, body {
 
 .doc-info .size {
   font-size: 12px;
-  color: gray;
+  color: var(--text-color);
+}
+/* LEFT TABS (same as right-tabs) */
+.left-tabs {
+  position: fixed;
+  left: 0;
+  top: 34%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+}
+
+.left-tabs button {
+  width: 25px;
+  height: 100px;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+
+  writing-mode: vertical-rl;
+  transform: rotate(180deg); /* 👈 LEFT side fix */
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.left-tabs button:hover {
+  background: #ddd;
+}
+
+.left-tabs button.active {
+  border-left: 3px solid #007bff;
+  border-radius: 0 0 0 6px;
+}
+.right-tabs {
+  position: fixed;
+  right: 0;
+  top: 34%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+}
+
+.right-tabs button {
+  width: 25px;
+  height: 100px;
+
+  border: none;
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+
+  /* 👇 TEXT ROTATION MAGIC */
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.right-tabs button:hover {
+  background: #ddd;
+}
+
+.right-tabs button.active {
+  border-right: 3px solid #007bff;
+  border-radius:  0 0 6px 0;
+  color: rgb(0, 0, 0);
 }

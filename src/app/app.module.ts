@@ -20,6 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
@@ -54,6 +55,7 @@ import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
     FormsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    DragDropModule,
     MatSidenavModule,
     MatToolbarModule,
     MatButtonModule,

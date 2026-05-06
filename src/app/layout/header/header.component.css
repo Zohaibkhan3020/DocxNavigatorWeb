@@ -18,13 +18,14 @@
   font-weight: 600;
   margin-left: 10px;
   white-space: nowrap;
+  color: rgb(61, 58, 58);
 }
 
 .search-box {
   display: flex;
   align-items: center;
   gap: 6px;
-
+  color: rgb(12, 10, 10);
   background: rgba(255, 255, 255, 0.15);
   padding: 4px 8px;
   border-radius: 6px;
@@ -39,7 +40,7 @@
   width: 100%;
   height: 10px;
   font-size: 11px;
-  color: rgb(7, 5, 5);
+  color: rgb(39, 38, 38);
 }
 
 .search-box button {
@@ -83,21 +84,6 @@ mat-icon {
   color: rgb(65, 62, 62);
 }
 
-/* TITLE */
-.app-title {
-  color: rgb(61, 58, 58);
-  font-weight: 600;
-}
-
-/* SEARCH BOX */
-.search-box {
-  background: rgba(255, 255, 255, 0.15);
-  color: rgb(12, 10, 10);
-}
-
-.search-box input {
-  color: rgb(39, 38, 38);
-}
 
 .search-box input::placeholder {
   color: rgba(36, 34, 34, 0.7);

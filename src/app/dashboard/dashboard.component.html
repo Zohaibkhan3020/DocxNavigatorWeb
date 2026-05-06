@@ -3,43 +3,40 @@
   (toggleSidebar)="toggleSidebar()"
   (logoutEvent)="logout()">
 </app-header>
-<app-breadcrumb></app-breadcrumb>
 <div class="dashboard">
 
   <!-- 🔹 Cards Section -->
-  <div class="card-grid">
+ <div class="card-grid"
+     cdkDropList
+     (cdkDropListDropped)="drop($event)">
 
- <mat-card class="card" *ngFor="let card of cards">
+  <mat-card class="card"
+            *ngFor="let card of cards; let i = index"
+            cdkDrag>
 
-  <!-- HEADER -->
-  <div class="card-header">
-    <mat-icon>{{ card.icon }}</mat-icon>
-    <h5>{{ card.title }}</h5>
-  </div>
+    <!-- HEADER -->
+    <div class="card-header" cdkDragHandle>
+      <mat-icon>{{ card.icon }}</mat-icon>
+      <h5>{{ card.title }}</h5>
+      <!-- <span class="order-badge">{{ i + 1 }}</span> -->
+    </div>
 
-  <!-- TABLE -->
-  <div class="card-body">
+    <!-- BODY -->
+    <div class="card-body">
+      <table class="simple-table">
+        <tr *ngFor="let item of card.list"
+            (click)="OpenContent(item)">
+          <td class="icon-cell">
+            <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+          </td>
+          <td class="name-cell">
+            {{ item.odM_Nname || item.label }}
+          </td>
+        </tr>
+      </table>
+    </div>
 
-    <table class="simple-table">
-
-      <tr *ngFor="let item of card.list" (click)="OpenContent(item)">
-
-        <td class="icon-cell">
-          <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
-        </td>
-
-        <td class="name-cell">
-          {{ item.odM_Nname }}
-        </td>
-
-      </tr>
-
-    </table>
-
-
-  </div>
-
-</mat-card>
+  </mat-card>
 
 </div>
 

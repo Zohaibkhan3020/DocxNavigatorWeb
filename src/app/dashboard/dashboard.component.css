@@ -13,24 +13,38 @@
 ========================= */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 350px; /* desktop */
-  gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  
+  gap: 10px;
   margin-bottom: 20px;
 }
+.cdk-drag {
+  transition: transform 250ms ease;
+}
 
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.2;
+}
+
+.cdk-drop-list-dragging .card {
+  transition: transform 250ms ease;
+}
 /* =========================
    CARD DESIGN
 ========================= */
 .card {
   padding: 10px;
   border-radius: 10px;
-  transition: 0.25s;
+  transition: transform 0.2s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   background: #fff;
   min-height: 220px;
-  width: 315px;
-  margin-left: 10px;
 }
 
 .card:hover {
