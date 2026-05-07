@@ -13,7 +13,7 @@ html, body {
 /* MAIN WRAPPER */
 .page-wrapper {
   display: flex;
-  height: calc(100vh - 45px);
+  height: 100%;
   overflow: hidden;
 }
 
@@ -54,13 +54,16 @@ html, body {
   position: relative;
   margin-right: 14px;
 }
-
+.meta-card{
+  height: 100%;
+  bottom: 50%;
+}
 /* SIDEBAR */
 .sidenav {
   background: var(--card-bg);
   border-right: 1px solid #e2e8f0;
-    position: fixed;   /* 👈 main fix */
-  top: 48px;         /* 👈 header ki height (adjust karo) */
+    position: fixed;   
+  top: 48px;  
   left: 0;
 }
 

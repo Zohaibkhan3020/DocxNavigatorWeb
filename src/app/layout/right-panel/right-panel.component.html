@@ -1,118 +1,99 @@
 <div class="right-panel">
-<!-- 🔥 TOP ACTION BAR -->
-<div class="top-actions">
 
-  <button mat-icon-button
-          [class.active]="activeView === 'preview'"
-          (click)="changeView('preview')">
-    <mat-icon>visibility</mat-icon>
-  </button>
-
-  <button mat-icon-button
-          [class.active]="activeView === 'metadata'"
-          (click)="changeView('metadata')">
-    <mat-icon>info</mat-icon>
-  </button>
-
-  <button mat-icon-button
-          [class.active]="activeView === 'comments'"
-          (click)="changeView('comments')">
-    <mat-icon>chat</mat-icon>
-  </button>
-
-</div>
-  <!-- CONTENT -->
+  <!-- 🔥 CONTENT -->
   <div class="panel-content">
 
-    <!-- PREVIEW -->
-    <div *ngIf="activeView === 'preview'" class="preview-card">
+    <div *ngIf="activeView === 'preview'"
+         class="preview-card">
 
-      <!-- <div class="pdf-toolbar">
-        <button mat-icon-button><mat-icon>zoom_in</mat-icon></button>
-        <button mat-icon-button><mat-icon>zoom_out</mat-icon></button>
-        <button mat-icon-button><mat-icon>download</mat-icon></button>
-      </div> -->
-
-      <iframe *ngIf="previewUrl"
+      <iframe
+        *ngIf="previewUrl"
         [src]="previewUrl | safeUrl"
         class="pdf-viewer">
       </iframe>
 
     </div>
+<div class="Meta">
+<div class="meta-header">
 
-    <!-- METADATA -->
-    <div *ngIf="activeView === 'metadata'" class="meta-card">
-
-      <div class="meta-header">
         <h3>Document Details</h3>
-
         <button mat-icon-button (click)="editMode = !editMode">
           <mat-icon>edit</mat-icon>
         </button>
-      </div>
-
+        <button mat-icon-button (click)="toggleMetaComment()">
+          <mat-icon>{{ activeView === 'metadata' ? 'chat' : 'info' }} </mat-icon>
+        </button>
+</div>
+<div *ngIf="activeView === 'metadata'" class="meta-card">
       <div class="meta-grid">
-
-        <div class="meta-row">
-          <span class="label">Name</span>
-          <span *ngIf="!editMode">{{ document?.name }}</span>
-          <input *ngIf="editMode" [(ngModel)]="document.name">
+        <div class="meta-row" *ngFor="let field of metadataFields">
+          <span class="label"> {{ field.label }} </span>
+          <span *ngIf="!editMode"> {{ field.value }}</span>
+          <input *ngIf="editMode" [(ngModel)]="field.value">
         </div>
-
-        <div class="meta-row">
-          <span class="label">Type</span>
-          <span>{{ document?.type }}</span>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">Size</span>
-          <span>{{ document?.size }}</span>
-        </div>
-
       </div>
+      <!-- SAVE -->
+      <button
+        *ngIf="editMode"
+        class="save-btn"
+        mat-raised-button
+        color="primary">
 
-      <button *ngIf="editMode" class="save-btn" mat-raised-button color="primary">
         Save Changes
+
       </button>
-
-    </div>
-<!-- COMMENTS -->
+</div>
 <div *ngIf="activeView === 'comments'" class="comment-card">
+      <!-- COMMENT LIST -->
+      <div class="comment-list">
 
-  <div class="comment-header">
-    <h3>Comments</h3>
-  </div>
+        <div class="comment-item"
+             *ngFor="let c of comments">
 
-  <!-- COMMENT LIST -->
-  <div class="comment-list">
+          <!-- AVATAR -->
+          <div class="avatar">
 
-    <div class="comment-item" *ngFor="let c of comments">
-      <div class="avatar">{{ c.user[0] }}</div>
+            {{ c.user[0] }}
 
-      <div class="comment-body">
-        <div class="meta">
-          <b>{{ c.user }}</b>
-          <span>{{ c.time }}</span>
+          </div>
+
+          <!-- BODY -->
+          <div class="comment-body">
+
+            <div class="meta">
+
+              <b>{{ c.user }}</b>
+
+              <span>{{ c.time }}</span>
+
+            </div>
+
+            <p>{{ c.text }}</p>
+
+          </div>
+
         </div>
-        <p>{{ c.text }}</p>
+
       </div>
-    </div>
 
-  </div>
+      <!-- INPUT -->
+      <div class="comment-input">
 
-  <!-- ADD COMMENT -->
-  <div class="comment-input">
+        <input
+          placeholder="Write a comment..."
+          [(ngModel)]="newComment"
+          (keyup.enter)="addComment()">
 
-    <input
-      placeholder="Write a comment..."
-      [(ngModel)]="newComment"
-      (keyup.enter)="addComment()">
+        <button
+          mat-icon-button
+          (click)="addComment()">
 
-    <button mat-icon-button (click)="addComment()">
-      <mat-icon>send</mat-icon>
-    </button>
+          <mat-icon>send</mat-icon>
 
-  </div>
+        </button>
+
+      </div>
+</div>
 
 </div>
   </div>

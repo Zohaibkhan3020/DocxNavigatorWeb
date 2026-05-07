@@ -34,9 +34,7 @@
 
          <!-- BREADCRUMB -->
        <app-breadcrumb
-  [items]="breadcrumb"
-  [rightPanelOpen]="rightPanelOpen"
-  (toggleRightPanel)="toggleRightPanel()">
+  [items]="breadcrumb">
 </app-breadcrumb>
         <!-- ROUTER CONTENT -->
         <div class="content">
@@ -44,12 +42,21 @@
         </div>
 
       </div>
-
       <!-- RIGHT RESIZER -->
-      <div class="resizer" (mousedown)="startResize($event)"></div>
+<div class="resizer"
+     *ngIf="previewOpen || infoPanelOpen"
+     (mousedown)="startResize($event)">
+</div>
 <div class="right-tabs">
-   <button (click)="setView('preview')">Preview</button>
-  <button (click)="setView('metadata')">Metadata</button>
+   <button (click)="togglePreview()">Preview</button>
+
+<button (click)="setInfoView('metadata')">
+  Metadata
+</button>
+
+<!-- <button (click)="setInfoView('comments')">
+  Comments
+</button> -->
   <!-- <button 
     [class.active]="activeView === 'preview'" 
     (click)="setView('preview')">
@@ -69,26 +76,29 @@
   </button> -->
 </div>
       <!-- RIGHT PANEL -->
-      <div class="right-panel"
-     [ngStyle]="{'width.px': rightPanelOpen ? rightWidth : 0}">
+<div class="right-panel"
+     [ngStyle]="{
+       'width.px': previewOpen ? rightWidth : 0,
+       'overflow': 'hidden'
+     }">
 
-
-<app-right-panel
-  [activeView]="'preview'"
-  [fileType]="fileType"
-  [document]="selectedDoc"
-  [previewUrl]="previewUrl"
-  (viewChange)="setView($event)">
-</app-right-panel>
+  <app-right-panel
+    activeView="preview"
+    [fileType]="fileType"
+    [document]="selectedDoc"
+    [previewUrl]="previewUrl">
+  </app-right-panel>
 
 </div>
 <!-- METADATA PANEL -->
+<!-- INFO PANEL -->
 <div class="right-panel meta-panel"
-     [ngStyle]="{'width.px': metadataOpen ? metaWidth : 0}">
+     [ngStyle]="{'width.px': infoPanelOpen ? metaWidth : 0}">
 
   <app-right-panel
-    [activeView]="'metadata'"
-    [document]="selectedDoc">
+    [activeView]="infoView"
+    [document]="selectedDoc"
+    (viewChange)="setInfoView($event)">
   </app-right-panel>
 
 </div>

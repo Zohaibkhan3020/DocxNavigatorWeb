@@ -65,8 +65,7 @@
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  padding: 10px;
-  height:80vh;
+  height:100vh;
 }
 
 /* PDF TOOLBAR */
@@ -96,7 +95,11 @@
   align-items: center;
   margin-bottom: 10px;
 }
-
+.Meta{
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+}
 .meta-header h3 {
   font-size: 15px;
   font-weight: 600;
