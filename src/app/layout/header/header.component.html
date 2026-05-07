@@ -58,29 +58,97 @@
   </button>
 
   <!-- USER -->
-  <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-    <mat-icon>account_circle</mat-icon>
+ <!-- PROFILE BUTTON -->
+<button
+  mat-icon-button
+  class="profile-trigger"
+  [matMenuTriggerFor]="profileMenu">
+
+  <div class="profile-avatar">
+
+    ZK
+
+  </div>
+
+</button>
+
+<!-- ENTERPRISE PROFILE MENU -->
+<mat-menu
+  #profileMenu="matMenu"
+  class="enterprise-menu"
+  xPosition="before">
+
+  <!-- HEADER -->
+  <div class="menu-header">
+
+    <div class="menu-avatar">
+
+      ZK
+
+    </div>
+
+    <div class="menu-user-info">
+
+      <h4>Zohaib Khan</h4>
+
+      <span>Administrator</span>
+
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- MENU ITEMS -->
+
+  <button mat-menu-item class="enterprise-item">
+
+    <mat-icon>person_outline</mat-icon>
+
+    <span>My Profile</span>
+
   </button>
 
-  <!-- USER MENU -->
-  <mat-menu #profileMenu="matMenu">
+  <button mat-menu-item class="enterprise-item">
 
-    <button mat-menu-item>
-      <mat-icon>person</mat-icon>
-      Profile
-    </button>
+    <mat-icon>manage_accounts</mat-icon>
 
-    <button mat-menu-item>
-      <mat-icon>settings</mat-icon>
-      Settings
-    </button>
+    <span>Account Settings</span>
 
-    <button mat-menu-item (click)="logoutEvent.emit()">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
+  </button>
 
-  </mat-menu>
+  <button mat-menu-item class="enterprise-item">
+
+    <mat-icon>notifications</mat-icon>
+
+    <span>Notifications</span>
+
+  </button>
+
+  <button mat-menu-item class="enterprise-item">
+
+    <mat-icon>security</mat-icon>
+
+    <span>Security</span>
+
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <!-- LOGOUT -->
+
+  <button
+    mat-menu-item
+    class="enterprise-item logout-btn"
+    (click)="logoutEvent.emit()">
+
+    <mat-icon>logout</mat-icon>
+
+    <span>Logout</span>
+
+  </button>
+
+</mat-menu>
 
 </mat-toolbar>
 

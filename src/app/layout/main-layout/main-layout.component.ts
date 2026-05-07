@@ -98,11 +98,10 @@ export class MainLayoutComponent {
 
     this.infoView = view;
 
-    this.infoPanelOpen = true;
+    this.infoPanelOpen = !this.infoPanelOpen;
   }
 
   setInfoView(view: 'metadata' | 'comments') {
-
     this.infoView = view;
 
     this.infoPanelOpen = true;
