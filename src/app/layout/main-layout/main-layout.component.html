@@ -1,109 +1,109 @@
-<!-- HEADER -->
-<app-header
-  [title]="title"
-  (toggleSidebar)="toggleSidebar()"
-  (logoutEvent)="logout()">
-</app-header>
+<!-- APP SHELL -->
+<div class="app-shell">
 
-<!-- APP WRAPPER -->
-<mat-sidenav-container class="sidenav-container">
+  <!-- HEADER (FIXED TOP) -->
+  <app-header
+    class="app-header"
+    [title]="title"
+    (toggleSidebar)="toggleSidebar()"
+    (logoutEvent)="logout()">
+  </app-header>
 
-  <!-- LEFT SIDEBAR -->
-  <mat-sidenav
-    class="sidenav"
-    mode="side"
-    [opened]="isSidebarOpened"
-    [ngStyle]="{'width.px': leftWidth}">
+  <!-- MAIN APP AREA -->
+  <mat-sidenav-container class="sidenav-container">
 
-    <app-sidebar
-      (navigateEvent)="navigate($event)">
-    </app-sidebar>
+    <!-- LEFT SIDEBAR -->
+    <mat-sidenav
+      class="sidenav"
+      mode="side"
+      [opened]="isSidebarOpened"
+      [ngStyle]="{'width.px': leftWidth}">
 
-  </mat-sidenav>
+      <app-sidebar
+        (navigateEvent)="navigate($event)">
+      </app-sidebar>
 
-  <!-- MAIN CONTENT -->
-  <mat-sidenav-content>
+    </mat-sidenav>
 
-    <div class="page-wrapper">
+    <!-- CONTENT AREA -->
+    <mat-sidenav-content>
 
-      <!-- LEFT RESIZER -->
-      <div class="resizer-left" (mousedown)="startLeftResize($event)"></div>
+      <div class="page-wrapper">
 
-      <!-- CENTER AREA -->
-      <div class="center-content">
-
-         <!-- BREADCRUMB -->
-       <app-breadcrumb
-  [items]="breadcrumb">
-</app-breadcrumb>
-        <!-- ROUTER CONTENT -->
-        <div class="content">
-          <router-outlet></router-outlet>
+        <!-- LEFT RESIZER -->
+        <div class="resizer-left"
+             (mousedown)="startLeftResize($event)">
         </div>
 
+        <!-- CENTER AREA -->
+        <div class="center-content">
+
+          <!-- BREADCRUMB (FIXED UNDER HEADER) -->
+          <app-breadcrumb
+            class="breadcrumb-bar"
+            [items]="breadcrumb">
+          </app-breadcrumb>
+
+          <!-- MAIN SCROLLABLE CONTENT ONLY -->
+          <div class="content">
+            <router-outlet></router-outlet>
+          </div>
+
+        </div>
+         <!-- RIGHT SIDE TABS -->
+        <div class="right-tabs">
+
+          <button (click)="togglePreview()">
+            Preview
+          </button>
+
+          <button (click)="openInfoPanel('metadata')">
+            Metadata
+          </button>
+
+        </div>
+<div class="right-panel-wrapper">
+        <!-- RIGHT RESIZER -->
+        <div class="resizer"
+             *ngIf="previewOpen || infoPanelOpen"
+             (mousedown)="startResize($event)">
+        </div>
+
+       
+
+        <!-- RIGHT PANEL (PREVIEW) -->
+        <div class="right-panel"
+             [ngStyle]="{
+               'width.px': previewOpen ? rightWidth : 0
+             }">
+
+          <app-right-panel
+            activeView="preview"
+            [fileType]="fileType"
+            [document]="selectedDoc"
+            [previewUrl]="previewUrl">
+          </app-right-panel>
+
+        </div>
+
+        <!-- RIGHT PANEL (METADATA) -->
+        <div class="right-panel meta-panel"
+             [ngStyle]="{
+               'width.px': infoPanelOpen ? metaWidth : 0
+             }">
+
+          <app-right-panel
+            [activeView]="infoView"
+            [document]="selectedDoc"
+            (viewChange)="setInfoView($event)">
+          </app-right-panel> 
+
+        </div>
+</div>
       </div>
-      <!-- RIGHT RESIZER -->
-<div class="resizer"
-     *ngIf="previewOpen || infoPanelOpen"
-     (mousedown)="startResize($event)">
-</div>
-<div class="right-tabs">
-   <button (click)="togglePreview()">Preview</button>
 
-<button (click)="openInfoPanel('metadata')">
-  Metadata
-</button>
+    </mat-sidenav-content>
 
-<!-- <button (click)="setInfoView('comments')">
-  Comments
-</button> -->
-  <!-- <button 
-    [class.active]="activeView === 'preview'" 
-    (click)="setView('preview')">
-    Preview
-  </button>
-
-  <button 
-    [class.active]="activeView === 'metadata'" 
-    (click)="setView('metadata')">
-    Metadata
-  </button>
-
-  <button 
-    [class.active]="activeView === 'comments'" 
-    (click)="setView('comments')">
-    Comments
-  </button> -->
-</div>
-      <!-- RIGHT PANEL -->
-<div class="right-panel"
-     [ngStyle]="{
-       'width.px': previewOpen ? rightWidth : 0,
-       'overflow': 'hidden'
-     }">
-
-  <app-right-panel
-    activeView="preview"
-    [fileType]="fileType"
-    [document]="selectedDoc"
-    [previewUrl]="previewUrl">
-  </app-right-panel>
+  </mat-sidenav-container>
 
 </div>
-<!-- METADATA PANEL -->
-<!-- INFO PANEL -->
-<div class="right-panel meta-panel"
-     [ngStyle]="{'width.px': infoPanelOpen ? metaWidth : 0}">
-
-  <app-right-panel
-    [activeView]="infoView"
-    [document]="selectedDoc"
-    (viewChange)="setInfoView($event)">
-  </app-right-panel>
-
-</div>
-    </div>
-
-  </mat-sidenav-content>
-
-</mat-sidenav-container>

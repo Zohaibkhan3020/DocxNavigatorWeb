@@ -18,9 +18,9 @@ export class MainLayoutComponent {
 
   leftWidth = 240;
 
-  rightWidth = 400;
+  rightWidth = 450;
 
-  metaWidth = 350;
+  metaWidth = 450;
 
   // 🔥 PREVIEW PANEL
   previewOpen = false;

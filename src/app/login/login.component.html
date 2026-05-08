@@ -1,77 +1,158 @@
-
 <div class="login-bg">
+
+  <!-- Animated Shapes -->
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div class="shape shape3"></div>
 
   <div class="glass-card">
 
-    <!-- Left Visual Side -->
+    <!-- LEFT SIDE -->
     <div class="left-panel">
-      <div class="brand">
+
+      <div class="logo-wrap">
+
+        <div class="logo-circle">
+          <mat-icon>shield</mat-icon>
+        </div>
+
         <h1>DMS</h1>
-        <p>Document Management System</p>
+
+        <p>
+          Smart Document Management Platform
+        </p>
+
       </div>
 
-      <div class="illustration">
-        🔐
+      <div class="features">
+
+        <div class="feature">
+          <mat-icon>security</mat-icon>
+          <span>Enterprise Security</span>
+        </div>
+
+        <div class="feature">
+          <mat-icon>bolt</mat-icon>
+          <span>Fast Document Access</span>
+        </div>
+
+        <div class="feature">
+          <mat-icon>cloud_done</mat-icon>
+          <span>Cloud Synchronization</span>
+        </div>
+
       </div>
 
-      <p class="tagline">
-        Secure • Fast • Reliable
-      </p>
+      <div class="left-footer">
+        Secure • Intelligent • Reliable
+      </div>
+
     </div>
 
-    <!-- Right Login Form -->
+    <!-- RIGHT SIDE -->
     <div class="right-panel">
 
+      <div class="top-badge">
+        Welcome Back 👋
+      </div>
+
       <h2>Sign In</h2>
-      <p class="sub">Welcome back, please login to continue</p>
+
+      <p class="sub">
+        Login to continue accessing your documents
+      </p>
 
       <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
 
-        <mat-form-field appearance="outline" class="full">
+        <!-- USERNAME -->
+        <mat-form-field appearance="outline" class="full modern-field">
+
           <mat-label>Username</mat-label>
+
           <mat-icon matPrefix>person</mat-icon>
-          <input matInput 
-           [(ngModel)]="username" 
-           name="username" 
-           required
-           #usernameRef="ngModel">
-           <mat-error *ngIf="usernameRef.invalid && usernameRef.touched">
-      Username is required
-    </mat-error>
+
+          <input
+            matInput
+            [(ngModel)]="username"
+            name="username"
+            required
+            #usernameRef="ngModel">
+
+          <mat-error *ngIf="usernameRef.invalid && usernameRef.touched">
+            Username is required
+          </mat-error>
+
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full">
+        <!-- PASSWORD -->
+        <mat-form-field appearance="outline" class="full modern-field">
+
           <mat-label>Password</mat-label>
+
           <mat-icon matPrefix>lock</mat-icon>
 
-          <input matInput 
-           [type]="hide ? 'password' : 'text'"
-           [(ngModel)]="password"
-           name="password"
-           required
-           #passwordRef="ngModel">
-            
-          <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            [(ngModel)]="password"
+            name="password"
+            required
+            #passwordRef="ngModel">
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hide = !hide">
+
+            <mat-icon>
+              {{ hide ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
           </button>
+
           <mat-error *ngIf="passwordRef.invalid && passwordRef.touched">
-      Password is required
-    </mat-error>
+            Password is required
+          </mat-error>
+
         </mat-form-field>
 
+        <!-- OPTIONS -->
         <div class="row">
-          <mat-checkbox>Remember</mat-checkbox>
-          <a class="link">Forgot?</a>
+
+          <mat-checkbox color="primary">
+            Remember me
+          </mat-checkbox>
+
+          <a class="link">
+            Forgot Password?
+          </a>
+
         </div>
 
-        <button mat-raised-button class="btn" type="submit">
+        <!-- LOGIN BUTTON -->
+        <button mat-raised-button class="btn-login" type="submit">
+
+          <mat-icon>login</mat-icon>
+
           Login
+
         </button>
 
-        <div class="divider">OR</div>
+        <!-- DIVIDER -->
+        <div class="divider">
+          <span>OR CONTINUE WITH</span>
+        </div>
 
-        <button mat-stroked-button class="google">
-          <mat-icon>login</mat-icon> Continue with Google
+        <!-- GOOGLE -->
+        <button mat-stroked-button class="google-btn">
+
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+            width="20">
+
+          Google
+
         </button>
 
       </form>
