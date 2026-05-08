@@ -22,8 +22,8 @@ setDocuments(data: any[]) {
     return this.http.get<any[]>(`${this.apiUrl}/AllDocument?CardID=${cardId}&UserID=${userId}`);
   }
   
-  SearchDocuments(userId: number, RoleID: number,Search : string,filters?: any) {
-    return this.http.get<any[]>(`${this.apiUrl}/Search?UserID=${userId}&RoleID=${RoleID}&Search=${Search}`);
+  SearchDocuments(userId: number, CardID: number,Search : string,filters?: any) {
+    return this.http.get<any[]>(`${this.apiUrl}/Search?UserID=${userId}&CardID=${CardID}&Search=${Search}`);
   }
 
  openDocument(docId: string, cardId: number, userId: number) {

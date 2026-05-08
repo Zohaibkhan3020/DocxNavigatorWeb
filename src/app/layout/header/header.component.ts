@@ -88,14 +88,16 @@ applyTheme() {
     const userId = Number(localStorage.getItem('id'));
     const roleId = Number(localStorage.getItem('RoleID'));
 
+
     if (!this.searchText || this.searchText.trim() === '') return;
 
     this.documentService
       .SearchDocuments(userId, roleId, this.searchText, this.filters)
       .subscribe({
         next: (data) => {
-
+          debugger
           const mapped = data.map(item => ({
+            cardid : item.cardID,
             name: item.odM_Nname,
             documentId: item.odM_DocumentID,
             documentName: item.odM_Nname,
@@ -109,6 +111,7 @@ applyTheme() {
           }));
 
           this.documentService.setDocuments(mapped);
+          console.log("Search Document :" + mapped)
         },
         error: (err) => console.error(err)
       });

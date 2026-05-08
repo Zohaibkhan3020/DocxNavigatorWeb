@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-list',
@@ -18,20 +19,10 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 //   this.rowSelected.emit(row);
 // }
   private _liveAnnouncer = inject(LiveAnnouncer);
-
-  displayedColumns: string[] = [
-    'name',
-    'documentId',
-    'documentName',
-    'ext',
-    'status',
-    'checkoutDate',
-    'checkinDate',
-    'version',
-    'createdBy',
-    'createdDate'
-  ];
-
+allColumns: string[] = [];
+displayedColumns: string[] = [];
+hiddenColumns: string[] = [];
+  
   dataSource = new MatTableDataSource<any>([]);
   private sub!: Subscription;
 
@@ -41,10 +32,59 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.sub = this.documentService.documents$.subscribe(data => {
-      this.dataSource.data = data || [];
-    });
+
+    if (!data) return;
+
+    this.setGridData(data);
+  });
+  const savedColumns = localStorage.getItem('grid-columns');
+
+if (savedColumns) {
+  this.displayedColumns = JSON.parse(savedColumns);
+}
+  }
+buildColumns(data: any[]) {
+
+  if (!data || data.length === 0) return;
+
+  this.allColumns = Object.keys(data[0]);
+
+  this.displayedColumns = [...this.allColumns];
+}
+dropColumn(event: CdkDragDrop<string[]>) {
+
+  moveItemInArray(
+    this.displayedColumns,
+    event.previousIndex,
+    event.currentIndex
+  );
+
+  this.displayedColumns = [...this.displayedColumns];
+}
+hideColumn(column: string) {
+
+  this.displayedColumns =
+    this.displayedColumns.filter(c => c !== column);
+
+  this.hiddenColumns.push(column);
+}
+showColumn(event: any) {
+
+  const column = event.target.value;
+
+  if (!column) return;
+
+  if (!this.displayedColumns.includes(column)) {
+    this.displayedColumns.push(column);
   }
 
+  this.hiddenColumns =
+    this.hiddenColumns.filter(c => c !== column);
+}
+setGridData(data: any[]) {
+  this.dataSource.data = data || [];
+  this.buildColumns(data);
+}
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
   }
@@ -64,9 +104,9 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectRow(row: any) {
-debugger;
-  // 🔥 send to main layout
+    localStorage.setItem('selectedNode', row.cardid);
   this.documentService.setSelectedDoc(row);
+  console.log("check : " +row)
 
 }
 }

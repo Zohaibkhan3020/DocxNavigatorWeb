@@ -43,16 +43,6 @@ html, body {
   border: 1px solid #e2e8f0;
 }
 
-/* RIGHT PANEL */
-.right-panel {
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-  background: var(--card-bg);
-  border-left: 1px solid #e2e8f0;
-  position: relative;
-  margin-right: 14px;
-}
 .meta-card{
   height: 100%;
   bottom: 50%;

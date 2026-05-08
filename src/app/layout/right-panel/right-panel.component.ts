@@ -80,7 +80,6 @@ toggleMetaComment() {
 generateMetadata() {
 
   this.metadataFields = [];
-debugger
   Object.keys(this.document).forEach(key => {
 
     this.metadataFields.push({
@@ -90,7 +89,6 @@ debugger
     });
 
   });
-  console.log(this.metadataFields);
 }
 formatLabel(key: string): string {
 

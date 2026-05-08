@@ -2,36 +2,17 @@
 
   <!-- CONTENT -->
   <div class="panel-content">
-
     <!-- PREVIEW -->
-    <div *ngIf="activeView === 'preview'"
-         class="preview-card">
-
-      <iframe
-        *ngIf="previewUrl"
-        [src]="previewUrl | safeUrl"
-        class="pdf-viewer">
-      </iframe>
-
+    <div *ngIf="activeView === 'preview'" class="preview-card">
+      <iframe *ngIf="previewUrl" [src]="previewUrl | safeUrl" class="pdf-viewer"></iframe>
     </div>
-
     <!-- METADATA + COMMENTS -->
-    <div
-      class="Meta"
-      *ngIf="activeView === 'metadata' || activeView === 'comments'">
-
+    <div class="Meta" *ngIf="activeView === 'metadata' || activeView === 'comments'">
       <!-- HEADER -->
       <div class="meta-header">
-
         <h3>Document Details</h3>
-
-        <button
-          mat-icon-button
-          (click)="editMode = !editMode"
-          *ngIf="activeView === 'metadata'">
-
+        <button mat-icon-button (click)="editMode = !editMode" *ngIf="activeView === 'metadata'">
           <mat-icon>edit</mat-icon>
-
         </button>
 
         <button mat-icon-button (click)="toggleMetaComment()">

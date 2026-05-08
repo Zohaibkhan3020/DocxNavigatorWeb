@@ -24,7 +24,8 @@ interface TreeNode {
 export class SidebarComponent implements OnInit {
   selectedNodeId: number | null = null;
   @Output() navigateEvent = new EventEmitter<any>();
-  constructor(private menuService: MenuService, private documentService: DocumentService, private router: Router) {}
+  constructor(private menuService: MenuService, private documentService: DocumentService, 
+    private router: Router) {}
 
   ngOnInit() {
    const userId = Number(localStorage.getItem('id'));
@@ -69,7 +70,6 @@ export class SidebarComponent implements OnInit {
   hasChild = (_: number, node: any) => node.expandable;
 
   mapTree(data: any[], parentBreadcrumb: string[]): TreeNode[] {
-    debugger
     return data.map(item => {
       const currentBreadcrumb = [...parentBreadcrumb, item.name];
 
@@ -100,8 +100,8 @@ export class SidebarComponent implements OnInit {
   }
 
   navigate(node: TreeNode) {
-this.selectedNodeId = node.id;
-localStorage.setItem('selectedNode', node.id.toString());
+    this.selectedNodeId = node.id;
+    localStorage.setItem('selectedNode', node.id.toString());
   // 👉 breadcrumb set karo
   this.documentService.setBreadcrumb(node.breadcrumb || []);
 
@@ -118,6 +118,7 @@ localStorage.setItem('selectedNode', node.id.toString());
     next: (data) => {
 
       const mapped = data.map(item => ({
+        cardid: item.cardID,
         name: item.odM_Nname,
         documentId: item.odM_DocumentID,
         documentName: item.odM_Nname,
@@ -129,7 +130,7 @@ localStorage.setItem('selectedNode', node.id.toString());
         createdBy: item.odM_CreateBy,
         createdDate: item.odM_CreateDate
       }));
-
+      debugger
       this.documentService.setDocuments(mapped);
 
       // async emit (safe)

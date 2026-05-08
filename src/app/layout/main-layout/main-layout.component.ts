@@ -43,20 +43,13 @@ export class MainLayoutComponent {
 
   ngOnInit() {
 
-    this.documentService.breadcrumb$
-      .subscribe(data => {
-        this.breadcrumb = data;
-      });
+    this.documentService.breadcrumb$.subscribe(data => { this.breadcrumb = data;  });
 
-    this.documentService.selectedDoc$
-      .subscribe(doc => {
-
-        if (!doc) return;
-
+    this.documentService.selectedDoc$.subscribe(doc => {
+      if (!doc) return;
         this.selectedDoc = doc;
-
+        console.log("MAIN :" + doc)
         const ext = doc.ext?.toLowerCase();
-
         if (ext === 'pdf') {
           this.fileType = 'pdf';
         }
@@ -66,11 +59,9 @@ export class MainLayoutComponent {
         else {
           this.fileType = null;
         }
-
         const cardId = Number(localStorage.getItem('selectedNode'));
-
-        this.documentService
-          .openDocument(doc.documentId, cardId, 1)
+        const userId = Number(localStorage.getItem('id') || 0);
+        this.documentService.openDocument(doc.documentId, cardId, userId)
           .subscribe(blob => {
 
             if (this.previewUrl) {
