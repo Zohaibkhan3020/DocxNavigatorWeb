@@ -85,19 +85,37 @@ applyTheme() {
 
   // 🔥 COMMON METHOD
   private searchDocuments() {
-    const userId = Number(localStorage.getItem('id'));
-    const roleId = Number(localStorage.getItem('RoleID'));
 
+  const userId = Number(localStorage.getItem('id'));
+  const roleId = Number(localStorage.getItem('RoleID'));
 
-    if (!this.searchText || this.searchText.trim() === '') return;
+  if (!this.searchText || this.searchText.trim() === '') return;
 
-    this.documentService
-      .SearchDocuments(userId, roleId, this.searchText, this.filters)
-      .subscribe({
-        next: (data) => {
-          debugger
-          const mapped = data.map(item => ({
-            cardid : item.cardID,
+  this.documentService
+    .SearchDocuments(userId, roleId, this.searchText, this.filters)
+    .subscribe({
+
+      next: (data) => {
+
+        const mapped = data.map((item: any) => {
+
+          // ✅ DynamicJson Parse
+          let dynamicFields = {};
+
+          try {
+            dynamicFields = item.dynamicJson
+              ? JSON.parse(item.dynamicJson)
+              : {};
+          }
+          catch (e) {
+            console.error('DynamicJson Parse Error', e);
+          }
+
+          return {
+
+            // STATIC FIELDS
+            cardid: item.cardID,
+            folderID: item.folderID,
             name: item.odM_Nname,
             documentId: item.odM_DocumentID,
             documentName: item.odM_Nname,
@@ -107,13 +125,19 @@ applyTheme() {
             checkinDate: item.odM_CheckoutDate,
             version: item.odM_DocVersion_Latest,
             createdBy: item.odM_CreateBy,
-            createdDate: item.odM_CreateDate
-          }));
+            createdDate: item.odM_CreateDate,
 
-          this.documentService.setDocuments(mapped);
-          console.log("Search Document :" + mapped)
-        },
-        error: (err) => console.error(err)
-      });
-  }
+            // ✅ DYNAMIC COLUMNS
+            ...dynamicFields
+          };
+        });
+
+        console.log(mapped);
+
+        this.documentService.setDocuments(mapped);
+      },
+
+      error: (err) => console.error(err)
+    });
+}
 }

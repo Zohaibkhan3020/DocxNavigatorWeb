@@ -148,9 +148,7 @@ body {
 
 app-breadcrumb {
 
-  margin: 10px 10px 0 10px;
-
-  border-radius: 16px;
+  margin: 2px;
 
   overflow: hidden;
 

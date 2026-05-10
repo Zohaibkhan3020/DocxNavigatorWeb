@@ -116,21 +116,39 @@ export class SidebarComponent implements OnInit {
 
   this.documentService.getDocuments(userId, cardId).subscribe({
     next: (data) => {
+debugger;
+      const mapped = data.map((item: any) => {
 
-      const mapped = data.map(item => ({
-        cardid: item.cardID,
-        name: item.odM_Nname,
-        documentId: item.odM_DocumentID,
-        documentName: item.odM_Nname,
-        ext: item.odM_DocumentExt,
-        status: item.odM_DocVersion_Latest,
-        checkoutDate: item.odM_CheckoutDate,
-        checkinDate: item.odM_CheckoutDate,
-        version: item.odM_DocVersion_Latest,
-        createdBy: item.odM_CreateBy,
-        createdDate: item.odM_CreateDate
-      }));
-      debugger
+  let dynamicFields = {};
+
+  try {
+    dynamicFields = item.dynamicJson
+      ? JSON.parse(item.dynamicJson)
+      : {};
+  }
+  catch (e) {
+    console.error('DynamicJson Parse Error', e);
+  }
+
+  return {
+
+    // ✅ Dynamic Fields
+    ...dynamicFields,
+    cardid: item.cardID,
+    folderID: item.folderID,
+    name: item.odM_Nname,
+    documentId: item.odM_DocumentID,
+    documentName: item.odM_Nname,
+    ext: item.odM_DocumentExt,
+    status: item.odM_DocVersion_Latest,
+    checkoutDate: item.odM_CheckoutDate,
+    checkinDate: item.odM_CheckoutDate,
+    version: item.odM_DocVersion_Latest,
+    createdBy: item.odM_CreateBy,
+    createdDate: item.odM_CreateDate
+
+  };
+});
       this.documentService.setDocuments(mapped);
 
       // async emit (safe)
