@@ -103,32 +103,28 @@ applyTheme() {
           let dynamicFields = {};
 
           try {
-            dynamicFields = item.dynamicJson
-              ? JSON.parse(item.dynamicJson)
-              : {};
+            dynamicFields = item.dynamicJson ? JSON.parse(item.dynamicJson) : {};
           }
           catch (e) {
             console.error('DynamicJson Parse Error', e);
           }
 
           return {
-
+            // ✅ DYNAMIC COLUMNS
+            ...dynamicFields,
             // STATIC FIELDS
             cardid: item.cardID,
             folderID: item.folderID,
             name: item.odM_Nname,
             documentId: item.odM_DocumentID,
-            documentName: item.odM_Nname,
             ext: item.odM_DocumentExt,
             status: item.odM_DocVersion_Latest,
             checkoutDate: item.odM_CheckoutDate,
             checkinDate: item.odM_CheckoutDate,
             version: item.odM_DocVersion_Latest,
             createdBy: item.odM_CreateBy,
-            createdDate: item.odM_CreateDate,
+            createdDate: item.odM_CreateDate
 
-            // ✅ DYNAMIC COLUMNS
-            ...dynamicFields
           };
         });
 

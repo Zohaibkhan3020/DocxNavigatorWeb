@@ -71,7 +71,7 @@ export class MainLayoutComponent {
             this.previewUrl = URL.createObjectURL(blob);
 
             // 🔥 AUTO OPEN PREVIEW
-            this.previewOpen = true;
+           this.infoPanelOpen = true;
           });
 
       });

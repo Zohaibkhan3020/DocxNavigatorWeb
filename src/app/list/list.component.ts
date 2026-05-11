@@ -15,9 +15,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 @Output() rowSelected = new EventEmitter<any>();
 
-// selectRow(row: any) {
-//   this.rowSelected.emit(row);
-// }
+selectedRow: any = null;
   private _liveAnnouncer = inject(LiveAnnouncer);
 allColumns: string[] = [];
 displayedColumns: string[] = [];
@@ -47,9 +45,55 @@ buildColumns(data: any[]) {
 
   if (!data || data.length === 0) return;
 
+  // ALL DB COLUMNS
   this.allColumns = Object.keys(data[0]);
 
-  this.displayedColumns = [...this.allColumns];
+  // SAVED VISIBLE
+  const savedVisible =
+    localStorage.getItem('grid-columns');
+
+  // SAVED HIDDEN
+  const savedHidden =
+    localStorage.getItem('hidden-columns');
+
+  this.hiddenColumns = savedHidden
+    ? JSON.parse(savedHidden)
+    : [];
+
+  // FIRST TIME
+  if (!savedVisible) {
+
+    this.displayedColumns =
+      this.allColumns.filter(
+        col => !this.hiddenColumns.includes(col)
+      );
+
+    return;
+  }
+
+  const parsedVisible = JSON.parse(savedVisible);
+
+  // RESTORE ONLY EXISTING COLUMNS
+  this.displayedColumns =
+    parsedVisible.filter((c: string) =>
+      this.allColumns.includes(c)
+    );
+
+  // AUTO ADD NEW DB COLUMNS
+  this.allColumns.forEach(col => {
+
+    const exists =
+      this.displayedColumns.includes(col);
+
+    const hidden =
+      this.hiddenColumns.includes(col);
+
+    // ONLY NEW & NOT HIDDEN
+    if (!exists && !hidden) {
+      this.displayedColumns.push(col);
+    }
+
+  });
 }
 dropColumn(event: CdkDragDrop<string[]>) {
 
@@ -60,27 +104,48 @@ dropColumn(event: CdkDragDrop<string[]>) {
   );
 
   this.displayedColumns = [...this.displayedColumns];
+
+  localStorage.setItem(
+    'grid-columns',
+    JSON.stringify(this.displayedColumns)
+  );
 }
-hideColumn(column: string) {
+toggleColumn(column: string, checked: boolean) {
 
-  this.displayedColumns =
-    this.displayedColumns.filter(c => c !== column);
+  if (checked) {
 
-  this.hiddenColumns.push(column);
-}
-showColumn(event: any) {
+    // SHOW
+    if (!this.displayedColumns.includes(column)) {
+      this.displayedColumns.push(column);
+    }
 
-  const column = event.target.value;
+    this.hiddenColumns =
+      this.hiddenColumns.filter(c => c !== column);
 
-  if (!column) return;
+  } else {
 
-  if (!this.displayedColumns.includes(column)) {
-    this.displayedColumns.push(column);
+    // HIDE
+    this.displayedColumns =
+      this.displayedColumns.filter(c => c !== column);
+
+    if (!this.hiddenColumns.includes(column)) {
+      this.hiddenColumns.push(column);
+    }
   }
 
-  this.hiddenColumns =
-    this.hiddenColumns.filter(c => c !== column);
+  // SAVE
+  localStorage.setItem(
+    'grid-columns',
+    JSON.stringify(this.displayedColumns)
+  );
+
+  localStorage.setItem(
+    'hidden-columns',
+    JSON.stringify(this.hiddenColumns)
+  );
 }
+
+
 setGridData(data: any[]) {
   this.dataSource.data = data || [];
   this.buildColumns(data);
@@ -90,23 +155,23 @@ setGridData(data: any[]) {
   }
 
   announceSortChange(sortState: any) {
-  const state = sortState as Sort;
-
-  if (state.direction) {
-    this._liveAnnouncer.announce(`Sorted ${state.direction}ending`);
-  } else {
-    this._liveAnnouncer.announce('Sorting cleared');
-  }
-}
+    const state = sortState as Sort;
+      if (state.direction) {
+        this._liveAnnouncer.announce(`Sorted ${state.direction}ending`);
+      } 
+      else {
+        this._liveAnnouncer.announce('Sorting cleared');
+      }
+    }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
 
-  selectRow(row: any) {
-    localStorage.setItem('selectedNode', row.cardid);
+ selectRow(row: any) {
+  this.selectedRow = row;
+  localStorage.setItem('selectedNode', row.cardid);
+  this.documentService.setSelectedNode(row.cardid);
   this.documentService.setSelectedDoc(row);
-  console.log("check : " +row)
-
-}
+  }
 }

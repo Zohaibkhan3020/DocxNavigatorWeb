@@ -281,7 +281,7 @@ app-breadcrumb {
   height: 100%;
 right: 0;
   overflow: hidden;
-padding: 10px;
+padding: 5px;
   background:
     linear-gradient(
       180deg,

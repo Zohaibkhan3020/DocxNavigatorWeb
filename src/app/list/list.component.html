@@ -3,32 +3,40 @@
   <!-- HEADER -->
   <div class="table-header ">
     <h5>Documents</h5>
-  </div>
+    <div class="table-toolbar">
 
-  <!-- 🔥 COLUMN CONTROLS -->
-  <!-- <div class="column-controls">
+  <button mat-raised-button
+          color="primary"
+          [matMenuTriggerFor]="columnMenu">
 
-  <button
-    *ngFor="let col of displayedColumns"
-    (click)="hideColumn(col)"
-    class="hide-btn">
-
-    Hide {{ col }}
+    <mat-icon>view_column</mat-icon>
+    Columns
 
   </button>
 
-  <select (change)="showColumn($event)">
+  <mat-menu #columnMenu="matMenu">
 
-    <option value="">Show Column</option>
+    <div class="column-menu">
 
-    <option *ngFor="let col of hiddenColumns"
-            [value]="col">
-      {{ col }}
-    </option>
+      <mat-checkbox
+        *ngFor="let col of allColumns"
+        [checked]="displayedColumns.includes(col)"
+        (click)="$event.stopPropagation()"
+        (change)="toggleColumn(col, $event.checked)">
 
-  </select>
+        {{ col }}
 
-</div> -->
+      </mat-checkbox>
+
+    </div>
+
+  </mat-menu>
+
+</div>
+  </div>
+
+  <!-- COLUMN SETTINGS -->
+
 
  <div
   cdkDropList
@@ -54,7 +62,7 @@
 
         <div class="drag-header">
 
-          <span class="drag-icon">☰</span>
+          <!-- <span class="drag-icon">☰</span> -->
 
           {{ col }}
 
@@ -76,13 +84,13 @@
 
     <!-- ROW -->
     <tr mat-row
-        *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)">
+        *matRowDef="let row; columns: displayedColumns;" (dblclick)="selectRow(row)"  [class.active-row]="selectedRow === row">
     </tr>
 
   </table>
 <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                  showFirstLastButtons
-                 aria-label="Select page of periodic elements">
+                  aria-label="Select page of documents">
   </mat-paginator>
 </div>
 

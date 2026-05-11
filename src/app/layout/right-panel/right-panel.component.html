@@ -7,162 +7,130 @@
       <iframe *ngIf="previewUrl" [src]="previewUrl | safeUrl" class="pdf-viewer"></iframe>
     </div>
     <!-- METADATA + COMMENTS -->
-    <div class="Meta" *ngIf="activeView === 'metadata' || activeView === 'comments'">
+    <div class="Meta"  *ngIf="activeView === 'metadata' || activeView === 'comments'">
       <!-- HEADER -->
-      <div class="meta-header">
-        <h3>Document Details</h3>
+      <div class="meta-header" *ngIf="metadataFields.length > 0">
+       <h3><mat-icon>description</mat-icon>{{ DName || 'Documents' }}</h3> 
         <button mat-icon-button (click)="editMode = !editMode" *ngIf="activeView === 'metadata'">
           <mat-icon>edit</mat-icon>
         </button>
 
         <button mat-icon-button (click)="toggleMetaComment()">
-
           <mat-icon>
             {{ activeView === 'metadata' ? 'chat' : 'info' }}
           </mat-icon>
-
         </button>
 
       </div>
-      <!-- TOP INFO -->
-<!-- <div class="doc-info-bar"> -->
+      <div class="meta-header-2" *ngIf="metadataFields.length > 0">
+        <div class="div1">
+          <label class="lbl1">Documents</label>
+          <label class="lbl2">ID:{{id}}  Version:{{version}}</label>
+        </div>
 
-  <!-- LEFT -->
-  <!-- <div class="info-left">
-
-    <div *ngFor="let field of metadataFields">
-
-      <div
-        class="info-item"
-        *ngIf="field.label === 'Version' || field.label === 'Document Id'">
-
-        <span class="info-label">
-          {{ field.label }}
-        </span>
-
-        <span class="info-value">
-          {{ field.value }}
-        </span>
+        <div class="div2">
+          <label class="lbl1">Created: {{createdDate | date:'dd-MMM-yyyy hh:mm a' }} {{createdBy}}</label>
+          <label class="lbl2" *ngif="modifiedDate">Modified: {{modifiedDate | date:'dd-MMM-yyyy hh:mm a' }} {{modifiedBy}}</label>
+        </div>
 
       </div>
-
-    </div>
-
-  </div> -->
-
-  <!-- RIGHT -->
-  <!-- <div class="info-right">
-
-    <div
-      class="info-item"
-      *ngFor="let field of metadataFields">
-
-      <ng-container *ngIf="field.label === 'Created By' || field.label === 'Created Date'">
-
-        <span class="info-label">
-          {{ field.label }}
-        </span>
-
-        <span class="info-value">
-          {{ field.value| date:'dd-MMM-yyyy hh:mm a' }}
-        </span>
-
-      </ng-container>
-
-    </div>
-
-  </div> -->
-
-<!-- </div> -->
+     
       <!-- METADATA -->
       <div *ngIf="activeView === 'metadata'"
            class="meta-card">
 
         <div class="meta-grid">
-
-          <div class="meta-row"
-               *ngFor="let field of metadataFields">
-
-            <span class="label">
-              {{ field.label }}
-            </span>
-
-            <span class="metavalue" *ngIf="!editMode">
-              {{ field.value }}
-            </span>
-
-            <input
-              *ngIf="editMode"
-              [(ngModel)]="field.value">
-
+          <div class="meta-row" *ngFor="let field of metadataFields">
+            <span class="label">{{ field.label }} </span>
+            <span class="metavalue" *ngIf="!editMode"> {{ field.value }} </span>
+            <input *ngIf="editMode" [(ngModel)]="field.value">
           </div>
-
         </div>
-
         <!-- SAVE -->
-        <button
-          *ngIf="editMode"
-          class="save-btn"
-          mat-raised-button
-          color="primary">
-
-          Save Changes
-
-        </button>
-
+        <button *ngIf="editMode" class="save-btn" mat-raised-button color="primary">Save Changes</button>
+      
       </div>
 
       <!-- COMMENTS -->
       <div *ngIf="activeView === 'comments'" class="comment-card">
-
         <!-- COMMENT LIST -->
         <div class="comment-list">
-
-          <div class="comment-item"
-               *ngFor="let c of comments">
-
+          <div class="comment-item" *ngFor="let c of comments">
             <div class="avatar">
               {{ c.user[0] }}
             </div>
 
             <div class="comment-body">
-
               <div class="meta">
-
                 <b>{{ c.user }}</b>
-
                 <span>{{ c.time }}</span>
-
               </div>
-
               <p>{{ c.text }}</p>
-
             </div>
-
           </div>
-
         </div>
 
         <!-- INPUT -->
         <div class="comment-input">
+          <input placeholder="Write a comment..." [(ngModel)]="newComment" (keyup.enter)="addComment()">
 
-          <input
-            placeholder="Write a comment..."
-            [(ngModel)]="newComment"
-            (keyup.enter)="addComment()">
-
-          <button
-            mat-icon-button
-            (click)="addComment()">
-
+          <button  mat-icon-button (click)="addComment()">
             <mat-icon>send</mat-icon>
-
           </button>
 
         </div>
 
       </div>
+      <div class="Workflows">
+        <div class="permissions"><mat-icon>lock</mat-icon>  <span>
+    permission from object properties
+  </span></div>
+        <div class="state">
+           <mat-form-field appearance="outline" class="dropdown">
+    <mat-label>Workflow</mat-label>
 
+    <mat-select [(value)]="selectedWorkflow">
+
+      <mat-option value="draft">
+        Draft
+      </mat-option>
+
+      <mat-option value="review">
+        Review
+      </mat-option>
+
+      <mat-option value="approved">
+        Approved
+      </mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+  <!-- STATUS -->
+  <mat-form-field appearance="outline" class="dropdown">
+    <mat-label>Status</mat-label>
+
+    <mat-select [(value)]="selectedStatus">
+
+      <mat-option value="pending">
+        Pending
+      </mat-option>
+
+      <mat-option value="inprogress">
+        In Progress
+      </mat-option>
+
+      <mat-option value="completed">
+        Completed
+      </mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+        </div>
+      </div>
     </div>
 
   </div>

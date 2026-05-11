@@ -27,9 +27,9 @@
     </mat-tree-node>
 
     <!-- PARENT -->
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [class.active]="selectedNodeId === node.id"  matTreeNodePadding>
 
-      <div class="node">
+      <div class="node"  [class.active]="selectedNodeId === node.id">
 
         <button mat-icon-button matTreeNodeToggle (click)="$event.stopPropagation()">
         <mat-icon>

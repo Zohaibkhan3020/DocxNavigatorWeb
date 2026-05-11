@@ -18,7 +18,6 @@ setDocuments(data: any[]) {
   this.documentsSubject.next(data);
 }
   getDocuments(userId: number, cardId: number) {
-    debugger
     return this.http.get<any[]>(`${this.apiUrl}/AllDocument?CardID=${cardId}&UserID=${userId}`);
   }
   
@@ -53,9 +52,17 @@ setSelectedDoc(doc: any) {
     if (data) this._breadcrumb.next(JSON.parse(data));
   }
   // ===== Selected Node =====
-  setSelectedNode(id: number) {
-    localStorage.setItem('selectedNode', id.toString());
-  }
+ private selectedNodeSource =
+  new BehaviorSubject<number | null>(null);
+
+selectedNode$ =
+  this.selectedNodeSource.asObservable();
+
+setSelectedNode(nodeId: number) {
+
+  this.selectedNodeSource.next(nodeId);
+
+}
 
   getSelectedNode(): number {
     return Number(localStorage.getItem('selectedNode'));

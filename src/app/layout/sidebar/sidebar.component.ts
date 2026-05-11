@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, AfterViewInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MenuService } from 'src/app/services/menu.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 interface TreeNode {
   id: number;
@@ -21,13 +22,21 @@ interface TreeNode {
   styleUrls: ['./sidebar.component.css'],
   standalone: false
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
   selectedNodeId: number | null = null;
+private nodeMap = new Map<number, any>();
+
   @Output() navigateEvent = new EventEmitter<any>();
   constructor(private menuService: MenuService, private documentService: DocumentService, 
     private router: Router) {}
-
+    private selectedNodeSub!: Subscription;
   ngOnInit() {
+     const savedNode =
+    localStorage.getItem('selectedNode');
+
+  if (savedNode) {
+    this.selectedNodeId = Number(savedNode);
+  }
    const userId = Number(localStorage.getItem('id'));
     const roleId = Number(localStorage.getItem('RoleID'));
 
@@ -39,25 +48,60 @@ export class SidebarComponent implements OnInit {
       },
       error: (err) => console.error(err)
     });
-  }
+   this.selectedNodeSub =
+  this.selectedNodeSub =
+  this.documentService.selectedNode$
+    .subscribe(nodeId => {
 
+      if (!nodeId) return;
+
+      this.selectedNodeId = nodeId;
+
+      setTimeout(() => {
+
+        this.expandNodeById(nodeId);
+
+      }, 200); // IMPORTANT delay
+
+    });
+  }
+  expandNodeById(nodeId: number) {
+
+    const nodes = this.treeControl.dataNodes || [];
+
+    const target = nodes.find(x => x.id === nodeId);
+
+    if (!target) return;
+
+    // Expand only THIS node (safe)
+    this.treeControl.expand(target);
+
+  }
   treeControl = new FlatTreeControl<any>(
     node => node.level,
     node => node.expandable
   );
 
-  private transformer = (node: TreeNode, level: number) => {
-    return {
-      id: node.id,
-      name: node.name,
-      icon: node.icon,
-      route: node.route,
-      type: node.type,
-      breadcrumb: node.breadcrumb,
-      level: level,
-      expandable: !!node.children?.length
-    };
+private transformer = (node: TreeNode, level: number) => {
+
+  const transformedNode = {
+
+    id: node.id,
+    name: node.name,
+    icon: node.icon,
+    route: node.route,
+    type: node.type,
+    breadcrumb: node.breadcrumb,
+    level: level,
+    expandable: !!node.children?.length
+
   };
+
+  // SAVE NODE
+  this.nodeMap.set(node.id, transformedNode);
+
+  return transformedNode;
+};
 
   treeFlattener = new MatTreeFlattener(
     this.transformer,
@@ -100,12 +144,18 @@ export class SidebarComponent implements OnInit {
   }
 
   navigate(node: TreeNode) {
-    this.selectedNodeId = node.id;
-    localStorage.setItem('selectedNode', node.id.toString());
-  // 👉 breadcrumb set karo
+     this.selectedNodeId = node.id;
+
+  this.documentService.setSelectedNode(node.id);
+
+  localStorage.setItem('selectedNode', node.id.toString());
+ setTimeout(() => {
+
+    this.expandNodeById(node.id);
+
+  }, 200);
   this.documentService.setBreadcrumb(node.breadcrumb || []);
 
-  // ❌ parent pe API call mat karo
    if (node.type !== 'Card') {
     this.navigateEvent.emit(node);
     return;
@@ -116,9 +166,7 @@ export class SidebarComponent implements OnInit {
 
   this.documentService.getDocuments(userId, cardId).subscribe({
     next: (data) => {
-debugger;
       const mapped = data.map((item: any) => {
-
   let dynamicFields = {};
 
   try {
@@ -138,7 +186,6 @@ debugger;
     folderID: item.folderID,
     name: item.odM_Nname,
     documentId: item.odM_DocumentID,
-    documentName: item.odM_Nname,
     ext: item.odM_DocumentExt,
     status: item.odM_DocVersion_Latest,
     checkoutDate: item.odM_CheckoutDate,
@@ -159,7 +206,28 @@ debugger;
     error: (err) => console.error(err)
   });
 }
+ngOnDestroy(): void {
 
+  this.selectedNodeSub?.unsubscribe();
+
+}
+ngAfterViewInit() {
+
+  setTimeout(() => {
+
+    const saved = localStorage.getItem('selectedNode');
+
+    if (saved) {
+
+      this.selectedNodeId = +saved;
+
+      this.expandNodeById(+saved);
+
+    }
+
+  }, 300);
+
+}
 clickLogo(){
   this.router.navigate(['/dashboard']);
 }
