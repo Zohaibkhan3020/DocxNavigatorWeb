@@ -172,7 +172,10 @@
 }
 
 /* ACTIVE */
-
+.context-menu-trigger {
+  position: fixed;
+  visibility: hidden;
+}
 .node.active {
 
   background:
@@ -308,4 +311,119 @@ button[matTreeNodeToggle] mat-icon {
 
   box-shadow:
     -4px 0 18px rgba(15,23,42,0.04);
+}
+.submenu-icon {
+  margin-left: auto;
+  font-size: 18px;
+  color: #64748b;
+}
+/* =========================================
+   MATERIAL MENU PANEL
+========================================= */
+
+::ng-deep .mat-mdc-menu-panel {
+
+  background: #ffffff !important;
+
+  border-radius: 12px !important;
+
+  border: 1px solid #e5e7eb;
+
+  min-width: 220px !important;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 30px rgba(15,23,42,0.12) !important;
+}
+
+/* =========================================
+   MENU CONTENT
+========================================= */
+
+::ng-deep .mat-mdc-menu-content {
+
+  padding: 6px !important;
+}
+
+/* =========================================
+   MENU ITEM
+========================================= */
+
+::ng-deep .mat-mdc-menu-item {
+
+  height: 42px !important;
+
+  border-radius: 10px;
+
+  margin-bottom: 4px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: #334155 !important;
+
+  transition: all 0.2s ease;
+}
+
+/* =========================================
+   HOVER EFFECT
+========================================= */
+
+::ng-deep .mat-mdc-menu-item:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fafc
+    ) !important;
+
+  color: #2563eb !important;
+
+  transform: translateX(2px);
+}
+
+/* =========================================
+   ICONS
+========================================= */
+
+::ng-deep .mat-mdc-menu-item mat-icon {
+
+  margin-right: 12px;
+
+  color: #2563eb !important;
+
+  font-size: 20px;
+}
+
+/* =========================================
+   SUB MENU ICON
+========================================= */
+
+.submenu-icon {
+
+  margin-left: auto;
+
+  color: #94a3b8;
+
+  font-size: 18px;
+}
+
+/* =========================================
+   ACTIVE / FOCUS
+========================================= */
+
+::ng-deep .mat-mdc-menu-item.cdk-focused,
+::ng-deep .mat-mdc-menu-item.cdk-program-focused {
+
+  background: #eff6ff !important;
+}
+
+/* =========================================
+   REMOVE RIPPLE DARK EFFECT
+========================================= */
+
+::ng-deep .mat-ripple-element {
+  opacity: 0.08 !important;
 }

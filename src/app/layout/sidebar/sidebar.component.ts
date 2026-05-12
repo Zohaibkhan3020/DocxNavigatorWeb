@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output, OnInit, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MenuService } from 'src/app/services/menu.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 interface TreeNode {
   id: number;
@@ -30,6 +31,13 @@ private nodeMap = new Map<number, any>();
   constructor(private menuService: MenuService, private documentService: DocumentService, 
     private router: Router) {}
     private selectedNodeSub!: Subscription;
+ @ViewChild('menuTrigger', { read: MatMenuTrigger })
+menuTrigger!: MatMenuTrigger;
+
+menuX = 0;
+menuY = 0;
+
+contextNode: any;
   ngOnInit() {
      const savedNode =
     localStorage.getItem('selectedNode');
@@ -130,10 +138,116 @@ private transformer = (node: TreeNode, level: number) => {
       };
     });
   }
+openContextMenu(event: MouseEvent, node: any) {
 
-  // =========================
-  // ICON SET
-  // =========================
+  event.preventDefault();
+
+  this.contextNode = node;
+
+  this.menuX = event.clientX;
+  this.menuY = event.clientY;
+
+  setTimeout(() => {
+    this.menuTrigger.openMenu();
+  });
+}
+
+addFolder(node: any) {
+
+  console.log('Add Folder:', node);
+
+  // TODO:
+  // open dialog
+}
+
+addCard(node: any) {
+
+  console.log('Add Card:', node);
+
+  // TODO:
+  // open dialog
+}
+createVault(node: any) {
+
+  console.log('Create Vault', node);
+
+}
+
+setPermission(node: any) {
+
+  console.log('Set Permission', node);
+
+}
+
+auditTrail(node: any) {
+
+  console.log('Audit Trail', node);
+
+}
+
+showDeleted(node: any) {
+
+  console.log('Show Deleted Documents', node);
+
+}
+createBinder(node: any) {
+
+  console.log('Create Binder', node);
+
+}
+
+createDrawer(node: any) {
+
+  console.log('Create Drawer', node);
+
+}
+
+
+renameNode(node: any) {
+
+  console.log('Rename', node);
+
+}
+
+deleteNode(node: any) {
+
+  console.log('Delete', node);
+
+}
+addNewDocument(node: any) {
+
+  console.log('Add New Document', node);
+
+}
+
+scanDocument(node: any) {
+
+  console.log('Scan Document', node);
+
+}
+
+cutNode(node: any) {
+
+  console.log('Cut', node);
+
+}
+
+copyNode(node: any) {
+
+  console.log('Copy', node);
+
+}
+
+editNode(node: any) {
+
+  console.log('Edit', node);
+
+}
+showDeletedDocuments(node: any) {
+
+  console.log('Show Deleted Documents', node);
+
+}
   getIcon(type: string): string {
     switch (type) {
       case 'Library': return 'dns';

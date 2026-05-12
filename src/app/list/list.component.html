@@ -1,97 +1,118 @@
-<div class="table-container">
+<div class="table-container" *ngIf="displayedColumns.length > 0">
 
   <!-- HEADER -->
-  <div class="table-header ">
+  <div class="table-header">
     <h5>Documents</h5>
+
     <div class="table-toolbar">
 
-  <button mat-raised-button
-          color="primary"
-          [matMenuTriggerFor]="columnMenu">
+      <button mat-raised-button
+              color="primary"
+              [matMenuTriggerFor]="columnMenu">
+        <mat-icon>view_column</mat-icon>
+      </button>
 
-    <mat-icon>view_column</mat-icon>
-    Columns
+      <mat-menu #columnMenu="matMenu">
+        <div class="column-menu">
 
-  </button>
+          <mat-checkbox
+            *ngFor="let col of allColumns"
+            [checked]="displayedColumns.includes(col)"
+            (click)="$event.stopPropagation()"
+            (change)="toggleColumn(col, $event.checked)">
+            {{ col }}
+          </mat-checkbox>
 
-  <mat-menu #columnMenu="matMenu">
+        </div>
+      </mat-menu>
 
-    <div class="column-menu">
+    </div>
+  </div>
 
-      <mat-checkbox
-        *ngFor="let col of allColumns"
-        [checked]="displayedColumns.includes(col)"
-        (click)="$event.stopPropagation()"
-        (change)="toggleColumn(col, $event.checked)">
+  <!-- TABLE -->
+  <div cdkDropList
+       cdkDropListOrientation="horizontal"
+       (cdkDropListDropped)="dropColumn($event)"
+       class="table-wrapper mat-elevation-z8">
+
+  <table mat-table
+       [dataSource]="dataSource"
+       matSort
+       class="sticky-table">
+
+      <!-- DYNAMIC COLUMNS -->
+      <ng-container *ngFor="let col of displayedColumns"
+              [matColumnDef]="col">
+
+  <!-- HEADER -->
+  <th mat-header-cell
+      *matHeaderCellDef
+      cdkDrag
+      [style.width.px]="columnWidths[col] || 120">
+
+    <div class="header-cell">
+
+      <!-- ===================================== -->
+      <!-- DRAG HANDLE -->
+      <!-- ===================================== -->
+
+      <span class="drag-icon"
+            cdkDragHandle
+            (click)="$event.stopPropagation()">
+
+        <mat-icon>drag_indicator</mat-icon>
+
+      </span>
+
+      <!-- ===================================== -->
+      <!-- SORT -->
+      <!-- ===================================== -->
+
+      <div class="sort-header"
+            mat-sort-header="{{col}}">
 
         {{ col }}
 
-      </mat-checkbox>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- RESIZE -->
+      <!-- ===================================== -->
+
+      <span class="resize-handle"
+            (mousedown)="startResize($event, col)">
+      </span>
 
     </div>
 
-  </mat-menu>
+  </th>
 
-</div>
+  <!-- CELL -->
+  <td mat-cell
+      *matCellDef="let row"
+      [style.width.px]="columnWidths[col] || 150">
+
+    {{ row[col] }}
+
+  </td>
+
+</ng-container>
+
+      <!-- ROWS -->
+      <tr mat-header-row
+          *matHeaderRowDef="displayedColumns"></tr>
+
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"
+          (dblclick)="selectRow(row)"
+          [class.active-row]="selectedRow === row">
+      </tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons>
+    </mat-paginator>
+
   </div>
-
-  <!-- COLUMN SETTINGS -->
-
-
- <div
-  cdkDropList
-  cdkDropListOrientation="horizontal"
-  (cdkDropListDropped)="dropColumn($event)"
-  class="table-wrapper mat-elevation-z8">
-
-  <table mat-table
-         [dataSource]="dataSource"
-         matSort
-         class="mat-elevation-z8 sticky-table">
-
-    <!-- DYNAMIC COLUMNS -->
-    <ng-container
-      *ngFor="let col of displayedColumns; let i = index"
-      [matColumnDef]="col">
-
-      <!-- HEADER -->
-      <th mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          cdkDrag>
-
-        <div class="drag-header">
-
-          <!-- <span class="drag-icon">☰</span> -->
-
-          {{ col }}
-
-        </div>
-
-      </th>
-
-      <!-- CELL -->
-      <td mat-cell *matCellDef="let row">
-
-        {{ row[col] }}
-
-      </td>
-
-    </ng-container>
-
-    <!-- HEADER -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-    <!-- ROW -->
-    <tr mat-row
-        *matRowDef="let row; columns: displayedColumns;" (dblclick)="selectRow(row)"  [class.active-row]="selectedRow === row">
-    </tr>
-
-  </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                  aria-label="Select page of documents">
-  </mat-paginator>
-</div>
-
 </div>

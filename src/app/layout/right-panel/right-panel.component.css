@@ -36,7 +36,7 @@
 .comment-card {
   flex: 1;
   min-height: 0;
-height: 350PX;
+height: 400PX;
   overflow: auto;
   background: #ffffff;
   border-radius: 10px;
@@ -190,6 +190,8 @@ display: flex;
 .Workflows{
   display: flex;
   justify-content: space-between;
+  padding: 10px;
+  background: #fff;
 }
 .permissions {
   width: 50%;
@@ -460,4 +462,61 @@ display: flex;
 .meta-actions {
   display: flex;
   gap: 6px;
+}
+.dropdown {
+  width: 180px;
+  margin: 5px; /* chota size */
+}
+.dropdown .ddselect .mdc-list-item{
+  background-color: #fff;
+}
+/* White background */
+::ng-deep .dropdown .mat-mdc-text-field-wrapper {
+  background: #ffffff !important;
+  height: 30px !important;
+  border-radius: 8px;
+}
+
+/* Input height */
+::ng-deep .dropdown .mat-mdc-form-field-flex {
+  height: 38px !important;
+  align-items: center;
+}
+
+/* Remove extra bottom space */
+::ng-deep .dropdown .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+/* Label size */
+::ng-deep .dropdown .mat-mdc-floating-label {
+  font-size: 11px;
+}
+
+/* Select text */
+::ng-deep .dropdown .mat-mdc-select-value {
+  font-size: 11px;
+}
+
+/* Dropdown panel background */
+::ng-deep .mat-mdc-select-panel {
+  background: #ffffff !important;
+}
+
+/* Option background */
+::ng-deep .mat-mdc-option {
+  background: #ffffff !important;
+  font-size: 11px;
+  height: 5px;
+}
+
+/* Hover effect */
+::ng-deep .mat-mdc-option:hover {
+  background: #f3f4f6 !important;
+}
+
+/* Selected option */
+::ng-deep .mat-mdc-option.mdc-list-item--selected {
+  background: #e5e7eb !important;
+  height: 5px;
 }

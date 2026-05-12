@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -62,6 +63,7 @@ import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
     MatButtonModule,
     MatListModule,
     MatTableModule,
+    MatSortModule,
     MatSelectModule,
     MatIconModule,
     MatTreeModule,

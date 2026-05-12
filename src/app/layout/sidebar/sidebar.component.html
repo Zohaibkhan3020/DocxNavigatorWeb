@@ -7,16 +7,27 @@
   </div>
 
   <!-- TREE -->
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+  <mat-tree
+    [dataSource]="dataSource"
+    [treeControl]="treeControl"
+    class="tree">
 
-    <!-- LEAF -->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <!-- ===================================== -->
+    <!-- LEAF NODE -->
+    <!-- ===================================== -->
+
+    <mat-tree-node
+      *matTreeNodeDef="let node"
+      matTreeNodePadding>
 
       <div class="node"
-     [class.active]="selectedNodeId === node.id"
-     (click)="navigate(node)">
+           [class.active]="selectedNodeId === node.id"
+           (click)="navigate(node)"
+           (contextmenu)="openContextMenu($event, node)">
 
-        <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
+        <mat-icon class="node-icon">
+          {{ node.icon }}
+        </mat-icon>
 
         <span class="node-text">
           {{ node.name }}
@@ -26,28 +37,375 @@
 
     </mat-tree-node>
 
-    <!-- PARENT -->
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" [class.active]="selectedNodeId === node.id"  matTreeNodePadding>
+    <!-- ===================================== -->
+    <!-- PARENT NODE -->
+    <!-- ===================================== -->
 
-      <div class="node"  [class.active]="selectedNodeId === node.id">
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasChild"
+      matTreeNodePadding>
 
-        <button mat-icon-button matTreeNodeToggle (click)="$event.stopPropagation()">
-        <mat-icon>
-          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-        </mat-icon>
-      </button>
+      <div class="node"
+           [class.active]="selectedNodeId === node.id"
+           (contextmenu)="openContextMenu($event, node)">
 
-      <div class="node-content" (click)="navigate(node)">
-        <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
+        <!-- EXPAND BUTTON -->
+        <button
+          mat-icon-button
+          matTreeNodeToggle
+          (click)="$event.stopPropagation()">
 
-        <span class="node-text">
-          {{ node.name }}
-        </span>
-</div>
+          <mat-icon>
+            {{
+              treeControl.isExpanded(node)
+                ? 'expand_more'
+                : 'chevron_right'
+            }}
+          </mat-icon>
+
+        </button>
+
+        <!-- CONTENT -->
+        <div class="node-content"
+             (click)="navigate(node)">
+
+          <mat-icon class="node-icon">
+            {{ node.icon }}
+          </mat-icon>
+
+          <span class="node-text">
+            {{ node.name }}
+          </span>
+
+        </div>
+
       </div>
 
     </mat-tree-node>
 
   </mat-tree>
+
+  <!-- ===================================== -->
+  <!-- CONTEXT MENU TRIGGER -->
+  <!-- ===================================== -->
+
+  <div
+    #menuTrigger="matMenuTrigger"
+    [matMenuTriggerFor]="contextMenu"
+    class="context-menu-trigger"
+    [style.left.px]="menuX"
+    [style.top.px]="menuY">
+  </div>
+
+  <!-- ===================================== -->
+  <!-- CONTEXT MENU -->
+  <!-- ===================================== -->
+
+  <mat-menu #contextMenu="matMenu">
+
+    <!-- LIBRARY MENU -->
+
+    <ng-container *ngIf="contextNode?.type === 'Library'">
+
+  <!-- CREATE WITH CHILD MENU -->
+  <button
+    mat-menu-item
+    [matMenuTriggerFor]="createMenu">
+
+    <mat-icon>add_circle</mat-icon>
+
+    <span>Create</span>
+
+    <mat-icon class="submenu-icon">
+      chevron_right
+    </mat-icon>
+
+  </button>
+
+  <!-- SUB MENU -->
+  <mat-menu #createMenu="matMenu">
+
+    <button
+      mat-menu-item
+      (click)="createVault(contextNode)">
+
+      <mat-icon>storage</mat-icon>
+
+      <span>Vault</span>
+
+    </button>
+
+  </mat-menu>
+
+  <!-- OTHER MENU -->
+  <button
+    mat-menu-item
+    (click)="setPermission(contextNode)">
+
+    <mat-icon>lock</mat-icon>
+
+    <span>Set Permission</span>
+
+  </button>
+
+  <button
+    mat-menu-item
+    (click)="auditTrail(contextNode)">
+
+    <mat-icon>history</mat-icon>
+
+    <span>Audit Trail</span>
+
+  </button>
+
+  <button
+    mat-menu-item
+    (click)="showDeleted(contextNode)">
+
+    <mat-icon>delete</mat-icon>
+
+    <span>Show Deleted Document</span>
+
+  </button>
+
+</ng-container>
+
+    <!-- FOLDER MENU -->
+
+    <ng-container *ngIf="contextNode?.type === 'Folder'">
+
+  <!-- ===================================== -->
+  <!-- CREATE MENU -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    [matMenuTriggerFor]="folderCreateMenu">
+
+    <mat-icon>add_circle</mat-icon>
+
+    <span>Create</span>
+
+    <mat-icon class="submenu-icon">
+      chevron_right
+    </mat-icon>
+
+  </button>
+
+  <!-- SUB MENU -->
+  <mat-menu #folderCreateMenu="matMenu">
+
+    <!-- BINDER -->
+    <button
+      mat-menu-item
+      (click)="createBinder(contextNode)">
+
+      <mat-icon>folder_copy</mat-icon>
+
+      <span>Binder</span>
+
+    </button>
+
+    <!-- DRAWER -->
+    <button
+      mat-menu-item
+      (click)="createDrawer(contextNode)">
+
+      <mat-icon>inventory_2</mat-icon>
+
+      <span>Drawer</span>
+
+    </button>
+
+  </mat-menu>
+
+  <!-- ===================================== -->
+  <!-- SET PERMISSION -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="setPermission(contextNode)">
+
+    <mat-icon>lock</mat-icon>
+
+    <span>Set Permission</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- RENAME -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="renameNode(contextNode)">
+
+    <mat-icon>edit</mat-icon>
+
+    <span>Rename</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- DELETE -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="deleteNode(contextNode)">
+
+    <mat-icon>delete</mat-icon>
+
+    <span>Delete</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- AUDIT TRAIL -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="auditTrail(contextNode)">
+
+    <mat-icon>history</mat-icon>
+
+    <span>Audit Trail</span>
+
+  </button>
+
+</ng-container>
+    <ng-container *ngIf="contextNode?.type === 'Card'">
+
+  <!-- ===================================== -->
+  <!-- ADD NEW DOCUMENT -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="addNewDocument(contextNode)">
+
+    <mat-icon>note_add</mat-icon>
+
+    <span>Add New Document</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- SCAN DOCUMENT -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="scanDocument(contextNode)">
+
+    <mat-icon>scanner</mat-icon>
+
+    <span>Scan Document</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- CUT -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="cutNode(contextNode)">
+
+    <mat-icon>content_cut</mat-icon>
+
+    <span>Cut</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- COPY -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="copyNode(contextNode)">
+
+    <mat-icon>content_copy</mat-icon>
+
+    <span>Copy</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- EDIT -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="editNode(contextNode)">
+
+    <mat-icon>edit</mat-icon>
+
+    <span>Edit</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- DELETE -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="deleteNode(contextNode)">
+
+    <mat-icon>delete</mat-icon>
+
+    <span>Delete</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- SET PERMISSION -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="setPermission(contextNode)">
+
+    <mat-icon>lock</mat-icon>
+
+    <span>Set Permission</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- AUDIT TRAIL -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="auditTrail(contextNode)">
+
+    <mat-icon>history</mat-icon>
+
+    <span>Audit Trail</span>
+
+  </button>
+
+  <!-- ===================================== -->
+  <!-- SHOW DELETED DOCUMENT -->
+  <!-- ===================================== -->
+
+  <button
+    mat-menu-item
+    (click)="showDeletedDocuments(contextNode)">
+
+    <mat-icon>restore_from_trash</mat-icon>
+
+    <span>Show Deleted Documents</span>
+
+  </button>
+
+</ng-container>
+
+  </mat-menu>
 
 </div>
