@@ -50,6 +50,7 @@ contextNode: any;
 
     this.menuService.getMenu(roleId, userId).subscribe({
       next: (data) => {
+        console.log('Menu Data:', data);
         // 🔥 map backend data → UI format
         const tree = this.mapTree(data, []);
         this.dataSource.data = tree;
@@ -151,7 +152,6 @@ openContextMenu(event: MouseEvent, node: any) {
     this.menuTrigger.openMenu();
   });
 }
-
 addFolder(node: any) {
 
   console.log('Add Folder:', node);
@@ -172,36 +172,25 @@ createVault(node: any) {
   console.log('Create Vault', node);
 
 }
-
 setPermission(node: any) {
 
   console.log('Set Permission', node);
 
 }
-
 auditTrail(node: any) {
 
   console.log('Audit Trail', node);
 
 }
-
 showDeleted(node: any) {
-
   console.log('Show Deleted Documents', node);
-
 }
 createBinder(node: any) {
-
   console.log('Create Binder', node);
-
 }
-
 createDrawer(node: any) {
-
   console.log('Create Drawer', node);
-
 }
-
 
 renameNode(node: any) {
 
@@ -252,6 +241,7 @@ showDeletedDocuments(node: any) {
     switch (type) {
       case 'Library': return 'dns';
       case 'Folder': return 'folder_open';
+      case 'Vault': return 'storage';
       case 'Card': return 'description';
       default: return 'insert_drive_file';
     }

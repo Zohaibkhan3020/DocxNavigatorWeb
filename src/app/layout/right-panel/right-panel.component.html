@@ -3,9 +3,32 @@
   <!-- CONTENT -->
   <div class="panel-content">
     <!-- PREVIEW -->
-    <div *ngIf="activeView === 'preview'" class="preview-card">
-      <iframe *ngIf="previewUrl" [src]="previewUrl | safeUrl" class="pdf-viewer"></iframe>
-    </div>
+    <!-- PREVIEW -->
+<div *ngIf="activeView === 'preview'" class="preview-card">
+
+  <iframe
+    *ngIf="fileType === 'pdf'"
+    [src]="previewUrl | safeUrl"
+    class="pdf-viewer">
+  </iframe>
+
+</div>
+
+<!-- GRID VIEW (CSV + EXCEL) -->
+<div *ngIf="fileType === 'csv' || fileType === 'excel'"
+     class="ag-theme-alpine grid-container">
+
+  <ag-grid-angular
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [rowData]="gridData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    rowSelection="single">
+  </ag-grid-angular>
+
+</div>
+    
     <!-- METADATA + COMMENTS -->
     <div class="Meta"  *ngIf="activeView === 'metadata' || activeView === 'comments'">
       <!-- HEADER -->
@@ -30,7 +53,7 @@
 
         <div class="div2">
           <label class="lbl1">Created: {{createdDate | date:'dd-MMM-yyyy hh:mm a' }} {{createdBy}}</label>
-          <label class="lbl2" *ngif="modifiedDate">Modified: {{modifiedDate | date:'dd-MMM-yyyy hh:mm a' }} {{modifiedBy}}</label>
+          <label class="lbl2" *ngIf="modifiedDate">Modified: {{modifiedDate | date:'dd-MMM-yyyy hh:mm a' }} {{modifiedBy}}</label>
         </div>
 
       </div>

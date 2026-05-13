@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-right-panel',
   templateUrl: './right-panel.component.html',
@@ -12,13 +12,20 @@ export class RightPanelComponent implements OnChanges {
 metadataFields: any[] = [];
   // 🔥 VIEW
   @Input() activeView: 'preview' | 'metadata' | 'comments' = 'preview';
-
+csvData: string[][] = [];
   // 🔥 FILE
-  @Input() fileType: 'pdf' | 'excel' | null = null;
-
+ @Input() fileType: 'pdf' | 'csv' | 'excel' | null = null;
   @Input() previewUrl: any;
-
   @Input() document: any;
+
+  gridData: any[] = [];
+  columnDefs: any[] = [];
+
+  defaultColDef = {
+    sortable: true,
+    filter: true,
+    resizable: true
+  };
 selectedWorkflow = 'draft';
 selectedStatus = 'pending';
   // 🔥 EVENTS
@@ -30,7 +37,6 @@ version: any;
 DName: string = '';
 createdDate: any;
 createdBy: any;
-
 modifiedDate: any;
 modifiedBy: any;
   // 🔥 COMMENTS
@@ -85,7 +91,82 @@ toggleMetaComment() {
 
     this.generateMetadata();
   }
+  
 }
+// =========================
+  // CSV LOAD
+  // =========================
+  loadCsvFromBlob(blob: Blob) {
+debugger
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+
+      const text = e.target.result;
+
+      const rows = text
+  .split('\n')
+  .map((r: string) => r.trim())
+  .filter((r: string) => r.length > 0)
+  .map((r: string) => r.split(','));
+
+      this.buildGrid(rows);
+    };
+
+    reader.readAsText(blob);
+  }
+
+  // =========================
+  // EXCEL LOAD
+  // =========================
+  loadExcelFromBlob(blob: Blob) {
+debugger
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+
+      const data = new Uint8Array(e.target.result);
+
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const sheetName = workbook.SheetNames[0];
+
+      const sheet = workbook.Sheets[sheetName];
+
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
+
+      this.buildGrid(rows);
+    };
+
+    reader.readAsArrayBuffer(blob);
+  }
+
+  // =========================
+  // COMMON GRID BUILDER
+  // =========================
+  buildGrid(rows: any[][]) {
+
+    if (!rows || rows.length === 0) return;
+
+    const headers = rows[0];
+
+    this.columnDefs = headers.map(h => ({
+      field: h,
+      headerName: h
+    }));
+
+    this.gridData = rows.slice(1).map(row => {
+
+      const obj: any = {};
+
+      headers.forEach((h, i) => {
+        obj[h] = row[i];
+      });
+console.log("CSV ROWS:", this.gridData);
+console.log("COLUMNS:", this.columnDefs);
+      return obj;
+    });
+  }
 generateMetadata() {
   this.metadataFields = [];
 
@@ -98,7 +179,6 @@ generateMetadata() {
       label: this.formatLabel(key),
       value: value
     };
-    debugger
     this.metadataFields.push(field);
 
     // 🔥 mapping logic

@@ -352,13 +352,10 @@ button[matTreeNodeToggle] mat-icon {
 
 ::ng-deep .mat-mdc-menu-item {
 
-  height: 42px !important;
+  height: 20px !important;
 
   border-radius: 10px;
 
-  margin-bottom: 4px;
-
-  font-size: 13px;
   font-weight: 500;
 
   color: #334155 !important;
@@ -394,7 +391,7 @@ button[matTreeNodeToggle] mat-icon {
 
   color: #2563eb !important;
 
-  font-size: 20px;
+  font-size: 16px;
 }
 
 /* =========================================
@@ -426,4 +423,8 @@ button[matTreeNodeToggle] mat-icon {
 
 ::ng-deep .mat-ripple-element {
   opacity: 0.08 !important;
+}
+.mat-mdc-menu-item-text {
+  font-size: 11px;
+  text-align: center;
 }

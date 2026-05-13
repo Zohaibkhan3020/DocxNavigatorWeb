@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/document.service';
+import { RightPanelComponent } from '../right-panel/right-panel.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -32,10 +33,11 @@ export class MainLayoutComponent {
 
   selectedDoc: any = null;
 
-  fileType: 'pdf' | 'excel' | null = null;
+  fileType: 'pdf' | 'excel' | 'csv' | null = null;
 
   previewUrl: any;
-
+@ViewChild(RightPanelComponent)
+rightPanel!: RightPanelComponent;
   constructor(
     private router: Router,
     private documentService: DocumentService
@@ -51,28 +53,36 @@ export class MainLayoutComponent {
         console.log("MAIN :" + doc)
         const ext = doc.ext?.toLowerCase();
         if (ext === 'pdf') {
-          this.fileType = 'pdf';
-        }
-        else if (ext === 'xls' || ext === 'xlsx') {
-          this.fileType = 'excel';
-        }
-        else {
-          this.fileType = null;
-        }
+  this.fileType = 'pdf';
+}
+else if (ext === 'xls' || ext === 'xlsx') {
+  this.fileType = 'excel';
+}
+else if (ext === 'csv') {
+  this.fileType = 'csv';
+}
+else {
+  this.fileType = null;
+}
         const cardId = Number(localStorage.getItem('selectedNode'));
         const userId = Number(localStorage.getItem('id') || 0);
-        this.documentService.openDocument(doc.documentId, cardId, userId)
-          .subscribe(blob => {
+this.documentService.openDocument(doc.documentId, cardId, userId)
+  .subscribe(blob => {
+debugger;
+    this.previewUrl = URL.createObjectURL(blob);
 
-            if (this.previewUrl) {
-              URL.revokeObjectURL(this.previewUrl);
-            }
+    if (this.fileType === 'csv') {
+      this.rightPanel.loadCsvFromBlob(blob);
+      return;
+    }
 
-            this.previewUrl = URL.createObjectURL(blob);
+    if (this.fileType === 'excel') {
+      this.rightPanel.loadExcelFromBlob(blob);
+      return;
+    }
 
-            // 🔥 AUTO OPEN PREVIEW
-           this.infoPanelOpen = true;
-          });
+    this.infoPanelOpen = true;
+  });
 
       });
   }
