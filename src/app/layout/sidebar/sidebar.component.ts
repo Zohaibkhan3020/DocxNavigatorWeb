@@ -6,7 +6,9 @@ import { DocumentService } from 'src/app/services/document.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatMenuTrigger } from '@angular/material/menu';
-
+import { FolderService } from 'src/app/services/folder.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateVaultDialogComponent } from 'src/app/shared/create-vault-dialog/create-vault-dialog.component';
 interface TreeNode {
   id: number;
   name: string;
@@ -16,7 +18,14 @@ interface TreeNode {
   breadcrumb?: string[];
   children?: TreeNode[];
 }
-
+export interface FolderDto {
+  folderID: number;
+  folderName: string;
+  parentID: number;
+  folderType: string;
+  username: string;
+  roleID: number;
+}
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -28,8 +37,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 private nodeMap = new Map<number, any>();
 
   @Output() navigateEvent = new EventEmitter<any>();
-  constructor(private menuService: MenuService, private documentService: DocumentService, 
-    private router: Router) {}
+  constructor(private menuService: MenuService,
+    private folderService: FolderService,
+    private documentService: DocumentService, 
+    private router: Router,
+    private dialog: MatDialog) {}
     private selectedNodeSub!: Subscription;
  @ViewChild('menuTrigger', { read: MatMenuTrigger })
 menuTrigger!: MatMenuTrigger;
@@ -50,7 +62,6 @@ contextNode: any;
 
     this.menuService.getMenu(roleId, userId).subscribe({
       next: (data) => {
-        console.log('Menu Data:', data);
         // 🔥 map backend data → UI format
         const tree = this.mapTree(data, []);
         this.dataSource.data = tree;
@@ -167,9 +178,74 @@ addCard(node: any) {
   // TODO:
   // open dialog
 }
-createVault(node: any) {
+createVault(node: any, type: string) {
+const userId = Number(localStorage.getItem('id'));
+  const roleId = Number(localStorage.getItem('RoleID'));
+  const username = localStorage.getItem('username');
+  const dialogRef = this.dialog.open(CreateVaultDialogComponent, {
+    width: '400px',
+    data: {
+      mode: 'Create',
+      type: type === 'Folder' ? 'Drawer' : type
+    }
+  });
 
-  console.log('Create Vault', node);
+  dialogRef.afterClosed().subscribe(result => {
+
+    if (!result)
+      return;
+
+    const payload = {
+
+      folderID: 0,
+      folderName: result.vaultName,
+      parentID: node.id,
+      folderType: type,
+      username: username,
+      roleID: roleId
+
+    };
+
+    this.folderService.createVault(payload).subscribe({
+
+      next: (res) => {
+
+        console.log('Vault Created');
+
+        this.menuService.getMenu(roleId, userId).subscribe({
+      next: (data) => {
+        // 🔥 map backend data → UI format
+        const tree = this.mapTree(data, []);
+        this.dataSource.data = tree;
+        setTimeout(() => {
+      this.restoreExpansion(node.id);
+    }, 300);
+      },
+      error: (err) => console.error(err)
+    });
+
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
+    });
+
+  });
+}
+
+restoreExpansion(nodeId: number) {
+
+  const nodes = this.treeControl.dataNodes || [];
+
+  const target = nodes.find(x => x.id === nodeId);
+
+  if (target) {
+
+    this.treeControl.expand(target);
+
+  }
 
 }
 setPermission(node: any) {
@@ -193,9 +269,43 @@ createDrawer(node: any) {
 }
 
 renameNode(node: any) {
+const userId = Number(localStorage.getItem('id'));
+  const roleId = Number(localStorage.getItem('RoleID'));
+  const username = localStorage.getItem('username');
+  const dialogRef = this.dialog.open(CreateVaultDialogComponent, {
+    width: '400px',
+    data: {
+      mode: 'Rename',
+      type: node.type,
+      currentName: node.name
+    }
+  });
 
-  console.log('Rename', node);
+  dialogRef.afterClosed().subscribe(result => {
 
+    if (!result) return;
+
+    const payload = {
+      id: node.id,
+      name: result.name,
+      type: node.type
+    };
+
+    this.folderService.renameNode(payload).subscribe(() => {
+      this.menuService.getMenu(roleId, userId).subscribe({
+      next: (data) => {
+        // 🔥 map backend data → UI format
+        const tree = this.mapTree(data, []);
+        this.dataSource.data = tree;
+        setTimeout(() => {
+      this.restoreExpansion(node.id);
+    }, 300);
+      },
+      error: (err) => console.error(err)
+    });
+    });
+
+  });
 }
 
 deleteNode(node: any) {

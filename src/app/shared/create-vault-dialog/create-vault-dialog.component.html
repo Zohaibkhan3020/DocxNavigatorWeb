@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ data.mode === 'Rename' ? 'Rename' : 'Create ' + data.type }} {{ data.type }}</h2>
+
+<mat-dialog-content>
+
+  <mat-form-field appearance="outline" class="full-width">
+
+    <mat-label> {{ data.mode === 'Rename' ? 'New Name' : data.type + ' Name' }}</mat-label>
+
+    <input
+      matInput
+      [(ngModel)]="vaultName">
+
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    (click)="close()">
+
+    Cancel
+
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="create()">
+
+    {{ data.mode === 'Rename' ? 'Update' : 'Create' }}
+
+  </button>
+
+</mat-dialog-actions>

@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -38,6 +39,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ListComponent } from './list/list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
+import { CreateVaultDialogComponent } from './shared/create-vault-dialog/create-vault-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
     FooterComponent,
     DashboardComponent,
     RightPanelComponent,
-    ListComponent
+    ListComponent,
+  CreateVaultDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,9 @@ import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
     MatTableModule,
     MatSortModule,
     MatSelectModule,
+    MatDialogModule,
     MatIconModule,
+    MatInputModule,
     MatTreeModule,
     MatCheckboxModule,
     MatCardModule,
@@ -76,7 +81,6 @@ import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
     MatMenuModule,
     MatTabsModule,
     MatFormFieldModule,
-    MatInputModule,
     HttpClientModule,
     MatPaginatorModule,
     MatPaginator,
