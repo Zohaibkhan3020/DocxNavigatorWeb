@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  width: 450px;   /* ✅ wider popup */
+  max-width: 90vw;
+}
+
+/* TITLE */
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(to right, #f8fafc, #ffffff);
+}
+
+.dialog-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+/* CONTENT */
+mat-dialog-content {
+  padding: 20px !important;
+}
+
+/* INPUT */
+.full-width {
+  width: 100%;
+}
+
+/* ACTIONS */
+mat-dialog-actions {
+  padding: 12px 20px 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* BUTTONS */
+button[mat-button] {
+  min-width: 100px;
+  border-radius: 8px;
+}
+
+button[mat-raised-button] {
+  min-width: 110px;
+  border-radius: 8px;
+}

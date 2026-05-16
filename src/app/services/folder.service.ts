@@ -17,4 +17,9 @@ renameNode(data: any) {
   return this.http.put<any>(`${this.apiUrl}/rename`,data
   );
 }
+
+deleteNode(data: any) {
+  return this.http.put<any>(`${this.apiUrl}/delete`,data
+  );
+}
 }

@@ -40,6 +40,8 @@ import { ListComponent } from './list/list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SafeUrlPipe } from "./shared/pipes/safe-url.pipe";
 import { CreateVaultDialogComponent } from './shared/create-vault-dialog/create-vault-dialog.component';
+import { ActionDialogComponent } from './shared/action-dialog/action-dialog.component';
+import { BinderdialogComponent } from './shared/binderdialog/binderdialog.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { CreateVaultDialogComponent } from './shared/create-vault-dialog/create-
     DashboardComponent,
     RightPanelComponent,
     ListComponent,
-  CreateVaultDialogComponent
+  CreateVaultDialogComponent,
+  ActionDialogComponent,
+  BinderdialogComponent
   ],
   imports: [
     BrowserModule,

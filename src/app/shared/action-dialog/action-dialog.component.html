@@ -1,0 +1,58 @@
+<h2 mat-dialog-title class="dialog-title">
+
+  <mat-icon class="dialog-icon">
+
+    {{
+      data.mode === 'delete'
+        ? 'warning'
+        : data.mode === 'rename'
+          ? 'edit'
+          : 'add_circle'
+    }}
+
+  </mat-icon>
+
+  {{ data.title }}
+
+</h2>
+
+<mat-dialog-content>
+
+  <!-- DELETE -->
+  <div *ngIf="data.mode === 'delete'">
+    {{ data.message }}
+  </div>
+
+  <!-- CREATE / RENAME -->
+  <div *ngIf="data.mode !== 'delete'">
+
+    <mat-form-field appearance="outline" class="full-width">
+
+      <mat-label>
+        {{ data.mode === 'rename' ? 'New Name' : 'Name' }}
+      </mat-label>
+
+      <input matInput [(ngModel)]="name">
+
+    </mat-form-field>
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button mat-button (click)="close()">
+    Cancel
+  </button>
+
+  <button
+    mat-raised-button
+    [color]="data.mode === 'delete' ? 'warn' : 'primary'"
+    (click)="save()">
+
+    {{ data.mode === 'delete' ? 'Delete' : 'Save' }}
+
+  </button>
+
+</mat-dialog-actions>

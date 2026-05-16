@@ -1,0 +1,129 @@
+<h2 mat-dialog-title>Binder</h2>
+
+<mat-dialog-content class="binder-container">
+
+  <!-- ===================== -->
+  <!-- BINDER NAME -->
+  <!-- ===================== -->
+
+  <mat-form-field appearance="outline" class="small-field">
+
+    <mat-label>Binder Name</mat-label>
+
+    <input matInput [(ngModel)]="binderName">
+
+  </mat-form-field>
+
+  <!-- ===================== -->
+  <!-- FIELD INPUT ROW -->
+  <!-- ===================== -->
+
+  <div class="field-row">
+
+  <!-- FIELD NAME + CHECKBOXES -->
+  <div class="field-col">
+
+    <mat-form-field appearance="outline" class="small-field">
+      <mat-label>Field Name</mat-label>
+      <input matInput [(ngModel)]="field.fieldName">
+    </mat-form-field>
+
+    <!-- CHECKBOX UNDER FIELD NAME -->
+    <div class="checks-inline">
+
+      <mat-checkbox [(ngModel)]="field.isUnique">
+        Unique
+      </mat-checkbox>
+
+      <mat-checkbox [(ngModel)]="field.isRequired">
+        Not Required
+      </mat-checkbox>
+
+    </div>
+
+  </div>
+
+  <!-- TYPE -->
+  <mat-form-field appearance="outline" class="small-field">
+    <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="field.fieldType">
+      <mat-option *ngFor="let t of fieldTypes" [value]="t">
+        {{ t }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- WIDTH -->
+  <mat-form-field appearance="outline" class="small-field">
+    <mat-label>Width</mat-label>
+    <input type="number" matInput [(ngModel)]="field.width">
+  </mat-form-field>
+<mat-form-field appearance="outline" class="small-field">
+  <mat-label>Dropdown</mat-label>
+  <mat-select [(ngModel)]="field.dropdownValue">
+    <mat-option *ngFor="let d of dropdownList" [value]="d">
+      {{ d }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+  <!-- ADD BUTTON -->
+  <button mat-raised-button color="primary" (click)="addField()">
+    Add
+  </button>
+
+</div>
+
+  <!-- ===================== -->
+  <!-- TABLE -->
+  <!-- ===================== -->
+
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th>Field Name</th>
+        <th>Type</th>
+        <th>Width</th>
+        <th>Unique</th>
+        <th>Required</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let f of fields; let i = index">
+
+        <td>{{ f.fieldName }}</td>
+        <td>{{ f.fieldType }}</td>
+        <td>{{ f.width }}</td>
+        <td>{{ f.isUnique }}</td>
+        <td>{{ f.isRequired }}</td>
+
+        <td>
+          <button mat-button color="warn" (click)="removeField(i)">
+            Remove
+          </button>
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</mat-dialog-content>
+
+<!-- ===================== -->
+<!-- ACTIONS -->
+<!-- ===================== -->
+
+<mat-dialog-actions align="end">
+
+  <button mat-button (click)="close()">Close</button>
+
+  <button mat-raised-button color="primary" (click)="create()">
+    Create
+  </button>
+
+</mat-dialog-actions>

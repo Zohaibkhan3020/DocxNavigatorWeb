@@ -9,6 +9,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderService } from 'src/app/services/folder.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateVaultDialogComponent } from 'src/app/shared/create-vault-dialog/create-vault-dialog.component';
+import { ActionDialogComponent } from 'src/app/shared/action-dialog/action-dialog.component';
+import { Title } from '@angular/platform-browser';
+import { BinderdialogComponent } from 'src/app/shared/binderdialog/binderdialog.component';
 interface TreeNode {
   id: number;
   name: string;
@@ -150,20 +153,20 @@ private transformer = (node: TreeNode, level: number) => {
       };
     });
   }
-openContextMenu(event: MouseEvent, node: any) {
+  openContextMenu(event: MouseEvent, node: any) {
 
-  event.preventDefault();
+    event.preventDefault();
 
-  this.contextNode = node;
+    this.contextNode = node;
 
-  this.menuX = event.clientX;
-  this.menuY = event.clientY;
+    this.menuX = event.clientX;
+    this.menuY = event.clientY;
 
-  setTimeout(() => {
-    this.menuTrigger.openMenu();
-  });
-}
-addFolder(node: any) {
+    setTimeout(() => {
+      this.menuTrigger.openMenu();
+    });
+  }
+  addFolder(node: any) {
 
   console.log('Add Folder:', node);
 
@@ -182,11 +185,16 @@ createVault(node: any, type: string) {
 const userId = Number(localStorage.getItem('id'));
   const roleId = Number(localStorage.getItem('RoleID'));
   const username = localStorage.getItem('username');
-  const dialogRef = this.dialog.open(CreateVaultDialogComponent, {
-    width: '400px',
+  const dialogRef = this.dialog.open(ActionDialogComponent, {
+    width: '450px',
+    maxHeight: 'auto',
+    panelClass: 'custom-dialog-container',
+    disableClose: true,
     data: {
-      mode: 'Create',
-      type: type === 'Folder' ? 'Drawer' : type
+      
+      mode: 'create',
+      type: type === 'Folder' ? 'Drawer' : type,
+      title: `Create New ${type === 'Folder' ? 'Drawer' : type}`,
     }
   });
 
@@ -207,25 +215,9 @@ const userId = Number(localStorage.getItem('id'));
     };
 
     this.folderService.createVault(payload).subscribe({
-
       next: (res) => {
-
-        console.log('Vault Created');
-
-        this.menuService.getMenu(roleId, userId).subscribe({
-      next: (data) => {
-        // 🔥 map backend data → UI format
-        const tree = this.mapTree(data, []);
-        this.dataSource.data = tree;
-        setTimeout(() => {
-      this.restoreExpansion(node.id);
-    }, 300);
+        this.loadMenu(node);
       },
-      error: (err) => console.error(err)
-    });
-
-      },
-
       error: (err) => {
         console.error(err);
       }
@@ -234,7 +226,43 @@ const userId = Number(localStorage.getItem('id'));
 
   });
 }
+renameNode(node: any) {
+const userId = Number(localStorage.getItem('id'));
+  const roleId = Number(localStorage.getItem('RoleID'));
+  const username = localStorage.getItem('username');
+  const dialogRef = this.dialog.open(ActionDialogComponent, {
+     width: '450px',
+  maxHeight: 'auto',
+  panelClass: 'custom-dialog-container',
+  disableClose: true,
+    data: {
+      mode: 'rename',
+      type: node.type,
+      currentName: node.name,
+       title: `Rename ${node.type === 'Folder' ? 'Drawer' : node.type}`
+    }
+  });
 
+  dialogRef.afterClosed().subscribe(result => {
+    if (!result) return;
+
+    const payload = {
+      id: node.id,
+      name: result.vaultName,
+      type: node.type,
+      username: username
+    };
+
+    this.folderService.renameNode(payload).subscribe(() => {
+      this.loadMenu(node);
+    });
+
+  });
+}
+
+showDeleted(node: any) {
+  console.log('Show Deleted Documents', node);
+}
 restoreExpansion(nodeId: number) {
 
   const nodes = this.treeControl.dataNodes || [];
@@ -258,41 +286,96 @@ auditTrail(node: any) {
   console.log('Audit Trail', node);
 
 }
-showDeleted(node: any) {
-  console.log('Show Deleted Documents', node);
-}
-createBinder(node: any) {
-  console.log('Create Binder', node);
-}
-createDrawer(node: any) {
-  console.log('Create Drawer', node);
-}
 
-renameNode(node: any) {
-const userId = Number(localStorage.getItem('id'));
-  const roleId = Number(localStorage.getItem('RoleID'));
-  const username = localStorage.getItem('username');
-  const dialogRef = this.dialog.open(CreateVaultDialogComponent, {
-    width: '400px',
+createBinder(node: any,type: string) {
+
+  const dialogRef = this.dialog.open(BinderdialogComponent, {
+width: '950px',
+  maxWidth: '95vw',
+  height: '85vh',
+  panelClass: 'binder-dialog',
+    disableClose: true,
     data: {
-      mode: 'Rename',
-      type: node.type,
-      currentName: node.name
+      parentNode: node
     }
+
   });
 
   dialogRef.afterClosed().subscribe(result => {
 
     if (!result) return;
 
+    console.log('Binder Data:', result);
+
+    // 👉 API call here later
+    /*
+    this.menuService.createBinder({
+      folderID: node.id,
+      cardName: result.binderName,
+      fields: result.fields
+    }).subscribe(...)
+    */
+
+    // 👉 reload tree after success
+    this.loadMenu(node);
+
+  });
+
+}
+createDrawer(node: any) {
+  console.log('Create Drawer', node);
+}
+
+
+
+deleteNode(node: any) {
+
+  const dialogRef = this.dialog.open(ActionDialogComponent, {
+
+     width: '450px',
+    maxHeight: 'auto',
+    panelClass: 'custom-dialog-container',
+    disableClose: true,
+
+    data: {
+
+      mode: 'delete',
+
+      title: 'Delete Confirmation',
+
+      message: `Are you sure you want to delete "${node.name}" ?`
+
+    }
+
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+
+    if (!result)
+      return;
+
     const payload = {
+
       id: node.id,
-      name: result.name,
-      type: node.type
+      type: node.type,
+      isDeleted: true
+
     };
 
-    this.folderService.renameNode(payload).subscribe(() => {
-      this.menuService.getMenu(roleId, userId).subscribe({
+    this.folderService.deleteNode(payload).subscribe(() => {
+
+      this.loadMenu(node);
+
+    });
+
+  });
+
+}
+
+loadMenu(node: any){
+  const userId = Number(localStorage.getItem('id'));
+    const roleId = Number(localStorage.getItem('RoleID'));
+this.menuService.getMenu(roleId, userId).subscribe({
       next: (data) => {
         // 🔥 map backend data → UI format
         const tree = this.mapTree(data, []);
@@ -303,15 +386,6 @@ const userId = Number(localStorage.getItem('id'));
       },
       error: (err) => console.error(err)
     });
-    });
-
-  });
-}
-
-deleteNode(node: any) {
-
-  console.log('Delete', node);
-
 }
 addNewDocument(node: any) {
 

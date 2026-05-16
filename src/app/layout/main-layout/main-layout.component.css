@@ -530,7 +530,11 @@ padding: 5px;
   box-shadow:
     0 14px 24px rgba(37,99,235,0.22);
 }
-
+.custom-dialog-container .mat-mdc-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px;
+}
 /* =========================================================
    MOBILE
 ========================================================= */
