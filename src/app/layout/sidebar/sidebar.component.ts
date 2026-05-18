@@ -8,10 +8,9 @@ import { Subscription } from 'rxjs';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderService } from 'src/app/services/folder.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateVaultDialogComponent } from 'src/app/shared/create-vault-dialog/create-vault-dialog.component';
 import { ActionDialogComponent } from 'src/app/shared/action-dialog/action-dialog.component';
-import { Title } from '@angular/platform-browser';
 import { BinderdialogComponent } from 'src/app/shared/binderdialog/binderdialog.component';
+import { BinderService } from 'src/app/services/binder.service';
 interface TreeNode {
   id: number;
   name: string;
@@ -42,7 +41,8 @@ private nodeMap = new Map<number, any>();
   @Output() navigateEvent = new EventEmitter<any>();
   constructor(private menuService: MenuService,
     private folderService: FolderService,
-    private documentService: DocumentService, 
+    private documentService: DocumentService,
+    private binderService: BinderService,
     private router: Router,
     private dialog: MatDialog) {}
     private selectedNodeSub!: Subscription;
@@ -204,16 +204,15 @@ const userId = Number(localStorage.getItem('id'));
       return;
 
     const payload = {
-
       folderID: 0,
-      folderName: result.vaultName,
+      folderName: result.name,
       parentID: node.id,
       folderType: type,
       username: username,
       roleID: roleId
 
     };
-
+debugger
     this.folderService.createVault(payload).subscribe({
       next: (res) => {
         this.loadMenu(node);
@@ -287,18 +286,16 @@ auditTrail(node: any) {
 
 }
 
-createBinder(node: any,type: string) {
-
+createBinder(node: any, type: string) {
+const userId = Number(localStorage.getItem('id'));
+    const roleId = Number(localStorage.getItem('RoleID'));
   const dialogRef = this.dialog.open(BinderdialogComponent, {
-width: '950px',
-  maxWidth: '95vw',
-  height: '85vh',
-  panelClass: 'binder-dialog',
+    width: '950px',
+    maxWidth: '95vw',
+    height: '85vh',
+    panelClass: 'binder-dialog',
     disableClose: true,
-    data: {
-      parentNode: node
-    }
-
+    data: { parentNode: node }
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -307,20 +304,39 @@ width: '950px',
 
     console.log('Binder Data:', result);
 
-    // 👉 API call here later
-    /*
-    this.menuService.createBinder({
+    const payload = {
+      dbID: node.dbID || 1,     // 👈 IMPORTANT (IndexServer DB)
       folderID: node.id,
-      cardName: result.binderName,
-      fields: result.fields
-    }).subscribe(...)
-    */
+      foldertype: "IndexCatalog",
+      userID: userId,
+      roleId: roleId,
+      cardCaption: result.binderName,
+      createdBy: 'administrator',
 
-    // 👉 reload tree after success
-    this.loadMenu(node);
+      fields: result.fields.map((f: any, index: number) => ({
+        fieldCaption: f.fieldName,
+        fieldWidth: f.width,
+        fieldDataType: f.fieldType,
+        fieldIsNull: !f.isRequired,
+        fieldIsUnique: f.isUnique,
+        fieldIsDropDown: f.fieldType === 'Dropdown',
+        dropListID: 0,
+        fieldOrder: index
+      }))
+    };
+debugger
+    this.binderService.createBinder(payload).subscribe({
+      next: (res) => {
+        console.log('Success:', res);
+
+        this.loadMenu(node); // reload tree
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
 
   });
-
 }
 createDrawer(node: any) {
   console.log('Create Drawer', node);
@@ -361,7 +377,7 @@ deleteNode(node: any) {
       isDeleted: true
 
     };
-
+debugger
     this.folderService.deleteNode(payload).subscribe(() => {
 
       this.loadMenu(node);
@@ -433,7 +449,7 @@ showDeletedDocuments(node: any) {
 
   navigate(node: TreeNode) {
      this.selectedNodeId = node.id;
-
+debugger
   this.documentService.setSelectedNode(node.id);
 
   localStorage.setItem('selectedNode', node.id.toString());

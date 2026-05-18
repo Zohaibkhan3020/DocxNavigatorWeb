@@ -23,7 +23,10 @@
 .binder-container mat-form-field:first-child {
   width: 100%;
 }
-
+.field-col .mat-mdc-form-field-infix{
+  height: 25px;
+  margin: 0;
+}
 /* =========================
    FIELD ROW LAYOUT
    ========================= */
@@ -38,6 +41,8 @@
 .field-col {
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
 /* =========================
@@ -95,4 +100,10 @@ mat-checkbox {
    ========================= */
 mat-dialog-actions {
   padding: 5px 0 0 0;
+}
+
+.table button {
+  margin: 0;
+  height: 25px;
+  font-size: 11px;
 }

@@ -23,7 +23,24 @@ export class BinderdialogComponent {
 
   fieldTypes = ['Text', 'Number', 'Date', 'Boolean', 'Dropdown'];
 
-  fields: BinderField[] = [];
+  fields: BinderField[] = [
+  {
+    fieldName: 'Document ID',
+    fieldType: 'Text',
+    width: 50,
+    isUnique: false,
+    isRequired: true,
+    dropdownValue: null
+  },
+  {
+    fieldName: 'Document Name',
+    fieldType: 'Text',
+    width: 50,
+    isUnique: false,
+    isRequired: true,
+    dropdownValue: null
+  }
+];
 
   // SINGLE FORM MODEL
   field: BinderField = {
@@ -39,20 +56,25 @@ export class BinderdialogComponent {
 
   addField() {
 
-    if (!this.field.fieldName.trim()) return;
+  if (!this.field.fieldName.trim()) return;
 
-    this.fields.push({ ...this.field });
+  const exists = this.fields.some(
+    f => f.fieldName.toLowerCase() === this.field.fieldName.toLowerCase()
+  );
 
-    // RESET FORM
-    this.field = {
-      fieldName: '',
-      fieldType: 'Text',
-      width: 50,
-      isUnique: false,
-      isRequired: false,
-      dropdownValue: null
-    };
-  }
+  if (exists) return;
+
+  this.fields.push({ ...this.field });
+
+  this.field = {
+    fieldName: '',
+    fieldType: 'Text',
+    width: 50,
+    isUnique: false,
+    isRequired: false,
+    dropdownValue: null
+  };
+}
 
   removeField(index: number) {
     this.fields.splice(index, 1);
